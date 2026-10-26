@@ -1,612 +1,1072 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick n Cheaper Supermarket | Fresh, Affordable Groceries</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pick n Cheaper | Exclusive Social Media Combo Meal Prep Special</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #00875A;
+      --primary-dark: #006644;
+      --accent: #E52E2E;
+      --accent-dark: #C82323;
+      --bg-dark: #0F172A;
+      --card-dark: #1E293B;
+      --bg-light: #F8FAFC;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --radius: 12px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --shadow-hero: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text-dark);
+      background-color: var(--bg-light);
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Top Urgency Banner */
+    .top-bar {
+      background-color: var(--accent);
+      color: #ffffff;
+      text-align: center;
+      padding: 10px 15px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 0.2px;
+    }
+
+    .timer-badge {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* Minimalist Conversion Header */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .social-badge {
+      background: #E6F4EA;
+      color: var(--primary-dark);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid #A3E0BF;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--card-dark) 100%);
+      color: white;
+      padding: 60px 0 80px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(229, 46, 46, 0.15);
+      border: 1px solid rgba(229, 46, 46, 0.4);
+      color: #FF8A8A;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      font-weight: 900;
+      margin-bottom: 18px;
+      letter-spacing: -0.8px;
+    }
+
+    .hero h1 span {
+      color: #FF5252;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: #94A3B8;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--accent);
+      color: white;
+      font-weight: 800;
+      font-size: 17px;
+      padding: 16px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -5px rgba(229, 46, 46, 0.5);
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -5px rgba(229, 46, 46, 0.6);
+    }
+
+    /* Product Spotlight Card */
+    .hero-card {
+      background: #ffffff;
+      color: var(--text-dark);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-hero);
+      position: relative;
+    }
+
+    .hero-card-badge {
+      position: absolute;
+      top: -14px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .combo-showcase {
+      text-align: center;
+      padding: 10px 0 0;
+    }
+
+    .combo-img-holder {
+      width: 100%;
+      height: 220px;
+      background: #F1F5F9;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      border: 2px dashed #CBD5E1;
+      position: relative;
+      overflow: hidden;
+      padding: 15px;
+    }
+
+    .combo-icons-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+
+    .product-tag-chip {
+      position: absolute;
+      bottom: 12px;
+      background: var(--bg-dark);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .price-tag {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .price-main {
+      font-size: 46px;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .price-old {
+      font-size: 20px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      font-weight: 600;
+    }
+
+    .save-badge {
+      background: var(--accent);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Benefits Section */
+    .benefits {
+      padding: 80px 0;
+      background: #ffffff;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 50px;
+    }
+
+    .section-title span {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .section-title h2 {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .benefit-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 26px;
+      transition: all 0.3s ease;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: #CBD5E1;
+    }
+
+    .benefit-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(0, 135, 90, 0.1);
+      color: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .benefit-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .benefit-card p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Interactive Estimator */
+    .calculator-section {
+      padding: 80px 0;
+      background: #F1F5F9;
+    }
+
+    .calc-box {
+      max-width: 680px;
+      margin: 0 auto;
+      background: white;
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .slider-container {
+      margin: 30px 0;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 10px;
+      border-radius: 5px;
+      background: #CBD5E1;
+      outline: none;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .calc-grid-results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 25px;
+    }
+
+    .calc-stat-box {
+      background: #E6F4EA;
+      border: 1px solid #A3E0BF;
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .calc-stat-box.secondary {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+    }
+
+    .calc-stat-box p {
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .calc-stat-box.secondary p {
+      color: var(--text-muted);
+    }
+
+    .calc-stat-box h3 {
+      font-size: 32px;
+      color: var(--primary);
+      font-weight: 900;
+      margin-top: 4px;
+    }
+
+    .calc-stat-box.secondary h3 {
+      color: var(--text-dark);
+    }
+
+    /* Proof Section */
+    .proof-section {
+      padding: 70px 0;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .proof-stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .stat-item h4 {
+      font-size: 40px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-item p {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .review-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .review-stars {
+      color: #F59E0B;
+      display: flex;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .review-card p {
+      font-size: 14px;
+      color: var(--text-dark);
+      font-style: italic;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reviewer-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .reviewer-info h5 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .reviewer-info span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 80px 0;
+      background: var(--bg-light);
+    }
+
+    .faq-container {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-answer {
+      padding: 0 24px 20px;
+      color: var(--text-muted);
+      font-size: 15px;
+      display: none;
+      line-height: 1.6;
+    }
+
+    .faq-item.active {
+      border-color: #CBD5E1;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    /* Voucher Claim Form (Conversion Zone) */
+    .conversion-section {
+      padding: 80px 0;
+      background: var(--bg-dark);
+      color: white;
+    }
+
+    .form-card {
+      max-width: 540px;
+      margin: 0 auto;
+      background: var(--card-dark);
+      padding: 40px;
+      border-radius: var(--radius);
+      border: 1px solid #334155;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-card h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .form-card p {
+      color: #94A3B8;
+      text-align: center;
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #CBD5E1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #0F172A;
+      color: white;
+      font-size: 15px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 135, 90, 0.25);
+    }
+
+    footer {
+      background: #090D16;
+      color: #64748B;
+      padding: 30px 0;
+      text-align: center;
+      font-size: 13px;
+      border-top: 1px solid #1E293B;
+    }
+
+    /* Digital Barcode Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      background: white;
+      color: var(--text-dark);
+      max-width: 480px;
+      width: 100%;
+      border-radius: var(--radius);
+      padding: 36px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .barcode-holder {
+      background: #F1F5F9;
+      border: 2px dashed #94A3B8;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--bg-dark);
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 32px; }
+      .price-main { font-size: 38px; }
+      .form-card { padding: 24px; }
+      .calc-grid-results { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased flex flex-col min-h-screen">
+<body>
 
-    <!-- Sticky Navigation Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="#home" onclick="navigateTo('home')" class="flex items-center space-x-3 group">
-                <span class="bg-red-600 group-hover:bg-red-700 text-white font-black px-3 py-1.5 rounded-lg text-lg tracking-wider shadow transition">PnC</span>
-                <div>
-                    <h1 class="text-xl font-extrabold text-red-600 tracking-tight leading-none group-hover:text-red-700 transition">Pick n Cheaper</h1>
-                    <span class="text-xs text-gray-500 font-semibold tracking-wide uppercase">Supermarket</span>
-                </div>
-            </a>
-            
-            <!-- Desktop Navigation Links -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-gray-600">
-                <a href="#home" onclick="navigateTo('home')" class="nav-link text-red-600 font-bold hover:text-red-600 transition">Home</a>
-                <a href="#products" onclick="navigateTo('products')" class="nav-link hover:text-red-600 transition">Products & Services</a>
-                <a href="#about" onclick="navigateTo('about')" class="nav-link hover:text-red-600 transition">About Us</a>
-                <a href="#contact" onclick="navigateTo('contact')" class="nav-link hover:text-red-600 transition">Contact & Leads</a>
-            </nav>
+  <!-- Urgency Countdown Header Bar -->
+  <div class="top-bar">
+    <span>🔥 SOCIAL EXCLUSIVE OFFER - VALID 48 HOURS ONLY</span>
+    <span class="timer-badge" id="countdown">23:45:12</span>
+  </div>
 
-            <!-- Campaign CTA Button -->
-            <div class="hidden sm:flex items-center space-x-3">
-                <button onclick="navigateTo('campaign')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition flex items-center space-x-2">
-                    <span>🚀 Campaign Hub</span>
-                </button>
-            </div>
-
-            <!-- Mobile Menu Toggle -->
-            <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
-                <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 pt-2 pb-4 space-y-3">
-            <a href="#home" onclick="navigateTo('home')" class="block py-2 text-gray-700 font-semibold hover:text-red-600">Home</a>
-            <a href="#products" onclick="navigateTo('products')" class="block py-2 text-gray-700 font-semibold hover:text-red-600">Products & Services</a>
-            <a href="#about" onclick="navigateTo('about')" class="block py-2 text-gray-700 font-semibold hover:text-red-600">About Us</a>
-            <a href="#contact" onclick="navigateTo('contact')" class="block py-2 text-gray-700 font-semibold hover:text-red-600">Contact & Leads</a>
-            <button onclick="navigateTo('campaign')" class="w-full text-left bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-lg shadow">🚀 Campaign Hub</button>
-        </div>
-    </header>
-
-    <!-- Main Content Body -->
-    <div class="flex-grow">
-        
-        <!-- ========================================== -->
-        <!-- HOME SECTION & HERO                        -->
-        <!-- ========================================== -->
-        <section id="home" class="scroll-mt-20">
-            <!-- Hero Banner -->
-            <div class="bg-gradient-to-b from-red-600 via-red-600 to-red-700 text-white py-16 md:py-24 px-4 sm:px-6">
-                <div class="max-w-4xl mx-auto text-center space-y-6">
-                    <span class="inline-block bg-white/10 backdrop-blur-md text-amber-300 font-semibold text-xs md:text-sm px-4 py-1.5 rounded-full border border-white/20">
-                        ⚡ Weekly Supermarket Specials & Discount Alerts
-                    </span>
-                    <h2 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight">
-                        Quality Groceries at Prices Your Budget Will Love
-                    </h2>
-                    <p class="text-red-100 text-base md:text-xl max-w-2xl mx-auto font-normal">
-                        Directly sourced fresh produce, premium butchery cuts, daily bakery delights, and household essentials across South Africa.
-                    </p>
-                    <div class="pt-4 flex flex-wrap justify-center gap-4">
-                        <a href="#products" onclick="navigateTo('products')" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold px-6 py-3.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
-                            Shop Special Categories
-                        </a>
-                        <button onclick="openPriceAlert('Weekly Grocery Voucher Bundle', 150)" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-6 py-3.5 rounded-xl transition">
-                            🎁 Claim Voucher Alert
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mini Savings Calculator Container -->
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 -mt-10 mb-16 relative z-10">
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
-                    <div class="text-center mb-6">
-                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Interactive Tool</span>
-                        <h3 class="text-2xl font-extrabold text-gray-900 mt-2">Mini Savings Calculator</h3>
-                        <p class="text-sm text-gray-500 mt-1">Estimate your monthly savings when switching primary grocery shopping to Pick n Cheaper.</p>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-8 items-center">
-                        <!-- Controls -->
-                        <div class="space-y-6">
-                            <div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <label class="text-sm font-semibold text-gray-700">Current Monthly Spend (ZAR):</label>
-                                    <span id="spendDisplay" class="text-lg font-black text-red-600">R 4,500</span>
-                                </div>
-                                <input type="range" id="spendSlider" min="1000" max="15000" step="250" value="4500" 
-                                    class="w-full h-2.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
-                                    oninput="updateCalculator()">
-                                <div class="flex justify-between text-xs text-gray-400 mt-1.5 font-medium">
-                                    <span>R 1,000</span>
-                                    <span>R 7,500</span>
-                                    <span>R 15,000+</span>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Household Size:</label>
-                                <select onchange="updateCalculator()" class="w-full px-3.5 py-2.5 border rounded-lg text-gray-800 bg-white focus:ring-2 focus:ring-red-500 outline-none">
-                                    <option>Single Shopper</option>
-                                    <option>Couple (2 People)</option>
-                                    <option selected>Family Household (3-4 People)</option>
-                                    <option>Large Household (5+ People)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Display Results -->
-                        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-4">
-                            <span class="text-xs font-bold text-emerald-800 uppercase tracking-wide">Estimated Grocery Savings</span>
-                            <div>
-                                <p class="text-xs text-emerald-600 font-semibold">Monthly Savings</p>
-                                <h4 id="monthlySavings" class="text-3xl font-black text-emerald-700">R 810</h4>
-                            </div>
-                            <div class="border-t border-emerald-200/60 pt-3">
-                                <p class="text-xs text-emerald-600 font-semibold">Estimated Annual Savings</p>
-                                <h5 id="annualSavings" class="text-xl font-bold text-emerald-800">R 9,720</h5>
-                            </div>
-                            <p class="text-[11px] text-gray-500 italic">*Based on average 18% price savings comparison against national retail benchmarks.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Value Highlights -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mb-12">
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center space-y-3">
-                        <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-2xl">🍎</div>
-                        <h4 class="font-bold text-lg text-gray-900">Daily Fresh Harvest</h4>
-                        <p class="text-sm text-gray-600">Directly sourced from local farmers to guarantee farm-fresh produce delivered every morning.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center space-y-3">
-                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-2xl">🏷️</div>
-                        <h4 class="font-bold text-lg text-gray-900">Cheaper Value Brands</h4>
-                        <p class="text-sm text-gray-600">Our exclusive white-label line provides uncompromising staple quality at unmatched low costs.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center space-y-3">
-                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">💳</div>
-                        <h4 class="font-bold text-lg text-gray-900">All-In-One Pay Point</h4>
-                        <p class="text-sm text-gray-600">Pay municipal bills, buy electricity, buy airtime, and withdraw cash right at our till counters.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- PRODUCTS & SERVICES SECTION                -->
-        <!-- ========================================== -->
-        <section id="products" class="py-16 bg-gray-100 border-t border-gray-200 scroll-mt-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-10">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Products & Special Services</h2>
-                    <p class="text-gray-600 mt-2">Browse our top discounted categories or set a custom price drop alert for your favorite basket items.</p>
-                    
-                    <!-- Category Filters -->
-                    <div class="flex flex-wrap justify-center gap-2 mt-6">
-                        <button onclick="filterProducts('all')" class="filter-btn bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition">All Specials</button>
-                        <button onclick="filterProducts('fresh')" class="filter-btn bg-white hover:bg-gray-200 text-gray-700 text-sm font-semibold px-4 py-2 rounded-lg transition">Fresh Produce</button>
-                        <button onclick="filterProducts('staples')" class="filter-btn bg-white hover:bg-gray-200 text-gray-700 text-sm font-semibold px-4 py-2 rounded-lg transition">Staple Pantry</button>
-                        <button onclick="filterProducts('paypoint')" class="filter-btn bg-white hover:bg-gray-200 text-gray-700 text-sm font-semibold px-4 py-2 rounded-lg transition">Pay-Point Services</button>
-                    </div>
-                </div>
-
-                <!-- Product Grid -->
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Product 1 -->
-                    <div class="product-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fresh">
-                        <div class="p-6">
-                            <span class="text-xs font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-md">Save 22%</span>
-                            <h3 class="text-xl font-bold text-gray-900 mt-3">Chicken Breast & Potato Combo</h3>
-                            <p class="text-sm text-gray-500 mt-1">Fresh skinless chicken breast fillet (1kg) + 2kg potato bag combo package.</p>
-                            <div class="mt-4 flex items-baseline space-x-2">
-                                <span class="text-2xl font-black text-emerald-700">R 89.99</span>
-                                <span class="text-sm text-gray-400 line-through">R 115.00</span>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-0">
-                            <button onclick="openPriceAlert('Chicken Breast & Potato Combo', 89.99)" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition text-sm">
-                                🔔 Set Price Alert
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product 2 -->
-                    <div class="product-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="staples">
-                        <div class="p-6">
-                            <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md">Pantry Essential</span>
-                            <h3 class="text-xl font-bold text-gray-900 mt-3">Super Maize Meal (10kg)</h3>
-                            <p class="text-sm text-gray-500 mt-1">Enriched top-quality white super maize meal for daily family sustenance.</p>
-                            <div class="mt-4 flex items-baseline space-x-2">
-                                <span class="text-2xl font-black text-emerald-700">R 112.50</span>
-                                <span class="text-sm text-gray-400 line-through">R 135.00</span>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-0">
-                            <button onclick="openPriceAlert('Super Maize Meal (10kg)', 112.50)" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition text-sm">
-                                🔔 Set Price Alert
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product 3 -->
-                    <div class="product-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="staples">
-                        <div class="p-6">
-                            <span class="text-xs font-bold text-red-600 bg-red-50 px-2.5 py-1 rounded-md">Save R30</span>
-                            <h3 class="text-xl font-bold text-gray-900 mt-3">Sunflower Cooking Oil (2L)</h3>
-                            <p class="text-sm text-gray-500 mt-1">Triple-refined pure sunflower oil ideal for frying, baking, and cooking.</p>
-                            <div class="mt-4 flex items-baseline space-x-2">
-                                <span class="text-2xl font-black text-emerald-700">R 59.99</span>
-                                <span class="text-sm text-gray-400 line-through">R 89.99</span>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-0">
-                            <button onclick="openPriceAlert('Sunflower Cooking Oil (2L)', 59.99)" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition text-sm">
-                                🔔 Set Price Alert
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product 4 -->
-                    <div class="product-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="fresh">
-                        <div class="p-6">
-                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">Farm Fresh</span>
-                            <h3 class="text-xl font-bold text-gray-900 mt-3">Fresh Milk & Egg Combo</h3>
-                            <p class="text-sm text-gray-500 mt-1">2L Full Cream Milk + 30 Pack Large Free Range Eggs.</p>
-                            <div class="mt-4 flex items-baseline space-x-2">
-                                <span class="text-2xl font-black text-emerald-700">R 78.00</span>
-                                <span class="text-sm text-gray-400 line-through">R 94.00</span>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-0">
-                            <button onclick="openPriceAlert('Fresh Milk & Egg Combo', 78.00)" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition text-sm">
-                                🔔 Set Price Alert
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product 5 -->
-                    <div class="product-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="paypoint">
-                        <div class="p-6">
-                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">Convenience Service</span>
-                            <h3 class="text-xl font-bold text-gray-900 mt-3">Utility & Bill Payments</h3>
-                            <p class="text-sm text-gray-500 mt-1">Pay municipal electricity, water accounts, and DSTV subscriptions zero fee.</p>
-                            <div class="mt-4 flex items-baseline space-x-2">
-                                <span class="text-lg font-bold text-gray-800">Zero Processing Fee</span>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-0">
-                            <button onclick="openPriceAlert('Utility & Bill Payments Info', 0)" class="w-full py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl transition text-sm">
-                                ℹ️ Remind Me
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product 6 -->
-                    <div class="product-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col justify-between" data-category="paypoint">
-                        <div class="p-6">
-                            <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Money Transfer</span>
-                            <h3 class="text-xl font-bold text-gray-900 mt-3">Instant Cash Express</h3>
-                            <p class="text-sm text-gray-500 mt-1">Send and receive instant cash transfers nationwide directly from our checkout desks.</p>
-                            <div class="mt-4 flex items-baseline space-x-2">
-                                <span class="text-lg font-bold text-gray-800">Low Flat Rate</span>
-                            </div>
-                        </div>
-                        <div class="px-6 pb-6 pt-0">
-                            <button onclick="openPriceAlert('Instant Cash Express Rate Alert', 10)" class="w-full py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl transition text-sm">
-                                🔔 Set Fee Alert
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- ABOUT US SECTION                           -->
-        <!-- ========================================== -->
-        <section id="about" class="py-16 bg-white scroll-mt-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-6">
-                        <span class="text-xs font-bold uppercase tracking-wider text-red-600 bg-red-50 px-3 py-1 rounded-full">Our Story & Commitment</span>
-                        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900">Dedicated to Lowering the Cost of Living</h2>
-                        <p class="text-gray-600 leading-relaxed">
-                            Founded with a mission to serve South African households, Pick n Cheaper combines farm-direct procurement with streamlined store logistics to deliver maximum savings without compromising quality.
-                        </p>
-                        <div class="grid sm:grid-cols-2 gap-4 pt-2">
-                            <div class="border-l-4 border-red-600 pl-4 py-1">
-                                <h4 class="font-extrabold text-gray-900 text-xl">100% Guaranteed</h4>
-                                <p class="text-xs text-gray-500">Fresh produce replacement guarantee on every purchase.</p>
-                            </div>
-                            <div class="border-l-4 border-emerald-600 pl-4 py-1">
-                                <h4 class="font-extrabold text-gray-900 text-xl">R 12M+ Saved</h4>
-                                <p class="text-xs text-gray-500">Total estimated customer savings across our campaign stores.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-gradient-to-br from-red-600 to-amber-500 p-8 rounded-3xl text-white space-y-4 shadow-xl">
-                        <h3 class="text-2xl font-black">Why Shop Pick n Cheaper?</h3>
-                        <ul class="space-y-3 text-sm text-red-50">
-                            <li class="flex items-start space-x-2">
-                                <span class="text-amber-300 font-bold">✓</span>
-                                <span>No bloated overhead costs passed to shoppers.</span>
-                            </li>
-                            <li class="flex items-start space-x-2">
-                                <span class="text-amber-300 font-bold">✓</span>
-                                <span>POPIA-compliant data handling & private alerts.</span>
-                            </li>
-                            <li class="flex items-start space-x-2">
-                                <span class="text-amber-300 font-bold">✓</span>
-                                <span>Integrated digital campaign vouchers every single week.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- CAMPAIGN HUB & NEWSLETTER SECTION          -->
-        <!-- ========================================== -->
-        <section id="campaign" class="py-16 bg-emerald-900 text-white scroll-mt-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-2xl mx-auto mb-12">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-400 bg-emerald-800 px-3 py-1 rounded-full border border-emerald-700">Digital Launch Hub</span>
-                    <h2 class="text-3xl font-black mt-3">Never Miss a Supermarket Deal!</h2>
-                    <p class="text-emerald-200 mt-2 text-sm">Join over 25,000 smart shoppers receiving early weekly catalogue previews and exclusive coupon codes.</p>
-                </div>
-
-                <!-- Newsletter Cards Container -->
-                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    <!-- Standard Emerald Newsletter Card -->
-                    <div class="p-6 rounded-2xl bg-emerald-800 border border-emerald-700 shadow-lg space-y-4">
-                        <div>
-                            <span class="text-xs font-bold text-emerald-300 uppercase">Weekly Specials Dispatch</span>
-                            <h3 class="text-xl font-bold mt-1 text-white">Standard Grocery Digest</h3>
-                            <p class="text-xs text-emerald-200 mt-1">Get early access to Thursday flyer catalogues straight to your inbox.</p>
-                        </div>
-                        <form onsubmit="handleNewsletterSubmit(event, 'digest')" class="space-y-3">
-                            <input type="email" required placeholder="Enter your email address" class="w-full px-4 py-2.5 rounded-xl text-gray-900 bg-white border outline-none focus:ring-2 focus:ring-amber-400 text-sm" />
-                            <button type="submit" class="w-full py-2.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition text-sm">
-                                Subscribe to Digest
-                            </button>
-                        </form>
-                        <div id="digestSuccess" class="hidden text-amber-300 text-xs text-center font-semibold pt-1">
-                            🎉 Subscribed! Check your inbox for this week's flyer.
-                        </div>
-                    </div>
-
-                    <!-- Accent Amber Newsletter Card -->
-                    <div class="p-6 rounded-2xl bg-amber-50 text-amber-950 border border-amber-200 shadow-lg space-y-4">
-                        <div>
-                            <span class="text-xs font-bold text-amber-800 uppercase">VIP Savings Club</span>
-                            <h3 class="text-xl font-bold mt-1 text-amber-900">R50 Welcome Coupon</h3>
-                            <p class="text-xs text-amber-800 mt-1">Receive an instant R50 digital discount code valid on your first order over R300.</p>
-                        </div>
-                        <form onsubmit="handleNewsletterSubmit(event, 'vip')" class="space-y-3">
-                            <input type="email" required placeholder="Enter your email address" class="w-full px-4 py-2.5 rounded-xl text-gray-900 bg-white border border-amber-300 outline-none focus:ring-2 focus:ring-emerald-600 text-sm" />
-                            <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition text-sm">
-                                Claim R50 Coupon
-                            </button>
-                        </form>
-                        <div id="vipSuccess" class="hidden text-emerald-700 text-xs text-center font-bold pt-1">
-                            ✅ Code sent! Check your inbox now.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================== -->
-        <!-- CONTACT & LEADS SECTION                    -->
-        <!-- ========================================== -->
-        <section id="contact" class="py-16 bg-white scroll-mt-20">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl font-extrabold text-gray-900">Contact Us & Lead Inquiry</h2>
-                    <p class="text-gray-600 mt-2">Have a question regarding bulk orders, supplier listing, or store locations?</p>
-                </div>
-
-                <div class="bg-gray-50 rounded-2xl p-6 sm:p-8 border border-gray-200 shadow-sm">
-                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
-                        <div class="grid sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Full Name</label>
-                                <input type="text" required placeholder="John Doe" class="w-full px-3.5 py-2.5 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-emerald-500 outline-none" />
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Email Address</label>
-                                <input type="email" required placeholder="john@example.com" class="w-full px-3.5 py-2.5 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-emerald-500 outline-none" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Inquiry Type</label>
-                            <select class="w-full px-3.5 py-2.5 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
-                                <option>General Customer Support</option>
-                                <option>Bulk / Wholesale Orders</option>
-                                <option>Supplier & Vendor Inquiries</option>
-                                <option>Franchise Opportunities</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Your Message</label>
-                            <textarea rows="4" required placeholder="How can our team help you?" class="w-full px-3.5 py-2.5 border rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
-                        </div>
-
-                        <!-- POPIA Compliance Checkbox -->
-                        <div class="flex items-start space-x-3 pt-2">
-                            <input type="checkbox" id="popiaCheck" required class="mt-1 h-4 w-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500" />
-                            <label for="popiaCheck" class="text-xs text-gray-600 leading-normal">
-                                I consent to Pick n Cheaper processing my personal details in compliance with the Protection of Personal Information Act (POPIA) for the sole purpose of responding to this inquiry.
-                            </label>
-                        </div>
-
-                        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition shadow">
-                            Send Inquiry Message
-                        </button>
-                    </form>
-
-                    <div id="contactSuccess" class="hidden text-center py-6 space-y-2">
-                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
-                        <h4 class="text-lg font-bold text-gray-900">Message Received!</h4>
-                        <p class="text-sm text-gray-600">Thank you for reaching out. Our support team will get back to you within 24 hours.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+  <!-- Minimalist Navigation Header -->
+  <header>
+    <div class="container header-nav">
+      <a href="#" class="logo">
+        Pick n <span>Cheaper</span>
+      </a>
+      <span class="social-badge">
+        <i data-lucide="zap" size="14"></i> Exclusive TikTok & IG Special
+      </span>
     </div>
+  </header>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-10 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-            <div class="flex justify-center space-x-6 text-sm">
-                <a href="#home" onclick="navigateTo('home')" class="hover:text-white">Home</a>
-                <a href="#products" onclick="navigateTo('products')" class="hover:text-white">Products</a>
-                <a href="#about" onclick="navigateTo('about')" class="hover:text-white">About Us</a>
-                <a href="#contact" onclick="navigateTo('contact')" class="hover:text-white">Contact</a>
-            </div>
-            <p class="text-xs text-gray-500">&copy; 2026 Pick n Cheaper Supermarket. All rights reserved. POPIA Compliant.</p>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-tag">
+          <i data-lucide="sparkles" size="16"></i> Cape Town Budget-Conscious Household Special
         </div>
-    </footer>
+        <h1>Feed Your Family For Less: <span>Exclusive Social Combo!</span></h1>
+        <p>Slash your weekly grocery bill with our high-protein meal prep combo. Get 1kg of local, air-fryer ready fresh chicken breasts PLUS a 2kg bag of South African potatoes for under R100!</p>
+        <a href="#claim-form" class="btn-primary">
+          Claim My R99.99 Combo Voucher <i data-lucide="arrow-right" size="18"></i>
+        </a>
+      </div>
 
-    <!-- ========================================== -->
-    <!-- PRICE ALERT MODAL OVERLAY                  -->
-    <!-- ========================================== -->
-    <div id="priceAlertModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-gray-800">
-            <button onclick="closePriceAlert()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-bold text-xl leading-none">✕</button>
-            
-            <!-- Form View -->
-            <div id="modalFormContainer">
-                <form onsubmit="handlePriceAlertSubmit(event)" class="space-y-4">
-                    <h3 class="text-xl font-bold text-gray-900">Set Price Alert</h3>
-                    <p class="text-sm text-gray-600">We'll email you as soon as <strong id="modalProductName" class="text-gray-900">Selected Product</strong> drops to your target price.</p>
-                    
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Target Price (R)</label>
-                        <input type="number" id="modalTargetPrice" step="0.01" required class="w-full px-3 py-2 border rounded-md text-gray-900 focus:ring-2 focus:ring-emerald-500 outline-none font-semibold" />
-                    </div>
-                    
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Your Email</label>
-                        <input type="email" id="modalEmail" required placeholder="name@example.com" class="w-full px-3 py-2 border rounded-md text-gray-900 focus:ring-2 focus:ring-emerald-500 outline-none" />
-                    </div>
-                    
-                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition shadow">
-                        Notify Me When Price Drops
-                    </button>
-                </form>
+      <!-- Hero Product Spotlight Card -->
+      <div class="hero-card">
+        <span class="hero-card-badge">Save R90 Today</span>
+        <div class="combo-showcase">
+          <div class="combo-img-holder">
+            <div class="combo-icons-row">
+              <i data-lucide="drumstick" size="54" color="#00875A"></i>
+              <span style="font-size: 24px; font-weight: 900; color: #94A3B8;">+</span>
+              <i data-lucide="utensils" size="54" color="#00875A"></i>
             </div>
+            <span style="font-weight: 800; font-size: 17px; color: var(--bg-dark); margin-top: 4px;">
+              1kg Chicken Breast + 2kg Potato Bag
+            </span>
+            <div class="product-tag-chip">
+              <i data-lucide="flame" size="12" color="#FF5252"></i> High Protein • 6 Servings Ready
+            </div>
+          </div>
+          
+          <div class="price-tag">
+            <span class="price-main">R99.99</span>
+            <span class="price-old">R189.99</span>
+            <span class="save-badge">47% OFF</span>
+          </div>
 
-            <!-- Success Confirmation View -->
-            <div id="modalSuccessContainer" class="text-center py-6 space-y-3 hidden">
-                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
-                <h4 class="text-lg font-bold text-gray-900">Alert Created!</h4>
-                <p class="text-sm text-gray-600">We’ll email updates to <strong id="confirmedEmail" class="text-gray-900"></strong> when <span id="confirmedProduct" class="font-semibold"></span> drops below R<span id="confirmedPrice"></span>.</p>
-                <button onclick="closePriceAlert()" class="mt-4 px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-md hover:bg-gray-200 transition">
-                    Back to Shopping
-                </button>
-            </div>
+          <p style="font-size: 13px; color: var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <i data-lucide="users" size="15"></i> Over 2,400 vouchers claimed today in Cape Town
+          </p>
         </div>
+      </div>
     </div>
+  </section>
 
-    <!-- ========================================== -->
-    <!-- INTERACTIVITY JAVASCRIPT LOGIC             -->
-    <!-- ========================================== -->
-    <script>
-        // Single Page Navigation Functionality
-        function navigateTo(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-            // Close mobile menu if open
-            document.getElementById('mobileMenu').classList.add('hidden');
+  <!-- Value Proposition / Benefits Section -->
+  <section class="benefits">
+    <div class="container">
+      <div class="section-title">
+        <span>WHY CAPE TOWN TRUSTS PICK N CHEAPER</span>
+        <h2>Low Everyday Prices. Fresh & Affordable.</h2>
+      </div>
+
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon"><i data-lucide="piggy-bank" size="26"></i></div>
+          <h3>Low Everyday Prices</h3>
+          <p>We work directly with Western Cape farmers to eliminate distributor markups, bringing unbeatable farm-gate savings straight to your basket.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon"><i data-lucide="badge-percent" size="26"></i></div>
+          <h3>Weekly Specials</h3>
+          <p>Exclusive deals designed for budget-conscious families. High-volume staples like chicken, fresh produce, and meal-prep essentials discounted every week.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon"><i data-lucide="sparkle" size="26"></i></div>
+          <h3>Fresh & Affordable</h3>
+          <p>Hand-trimmed 100% prime chicken breast cutlets and grade-A local potatoes delivered daily. Zero compromises on quality or freshness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Meal Savings & Portion Estimator -->
+  <section class="calculator-section">
+    <div class="container">
+      <div class="section-title">
+        <span>INTERACTIVE PORTION CALCULATOR</span>
+        <h2>Calculate Your Per-Serving Savings</h2>
+      </div>
+
+      <div class="calc-box">
+        <div class="slider-container">
+          <div class="slider-labels">
+            <span>Combos Purchased:</span>
+            <span id="packs-display" style="color: var(--primary); font-size: 20px; font-weight: 900;">1 Combo (3kg Total)</span>
+          </div>
+          <input type="range" id="packs-slider" min="1" max="6" step="1" value="1" oninput="calculateSavings()">
+        </div>
+
+        <div class="calc-grid-results">
+          <div class="calc-stat-box">
+            <p>Cost Per High-Protein Serving</p>
+            <h3 id="cost-per-meal">R16.60</h3>
+          </div>
+          <div class="calc-stat-box secondary">
+            <p>Total Savings vs Normal Price</p>
+            <h3 id="total-savings">R90.00</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof & Review Section -->
+  <section class="proof-section">
+    <div class="container">
+      <div class="proof-stats">
+        <div class="stat-item">
+          <h4>2,400+</h4>
+          <p>Combos Claimed Today</p>
+        </div>
+        <div class="stat-item">
+          <h4>R216,000+</h4>
+          <p>Saved by CPT Shoppers</p>
+        </div>
+        <div class="stat-item">
+          <h4>4.9 / 5 ⭐</h4>
+          <p>Based on 1,850+ Social Reviews</p>
+        </div>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Claimed my voucher on Instagram and picked it up at the Wynberg branch. The chicken breast quality is amazing and you can't beat a 2kg potato bag for R99 combo!"</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">AZ</div>
+            <div class="reviewer-info">
+              <h5>Ayesha Z.</h5>
+              <span>Wynberg, Cape Town</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Meal prepping for my fitness goals usually costs a fortune. This combo gives me 6 huge high-protein meals for R16 each. Absolute game changer!"</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">KD</div>
+            <div class="reviewer-info">
+              <h5>Kevyn D.</h5>
+              <span>Bellville, Cape Town</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Got the barcode on WhatsApp right after submitting the form. Staff at Athlone store scanned it easily. Super fast and easy!"</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">NP</div>
+            <div class="reviewer-info">
+              <h5>Nomalanga P.</h5>
+              <span>Athlone, Cape Town</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="section-title">
+        <span>HAVE QUESTIONS?</span>
+        <h2>Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-question">
+            How do I redeem my R99.99 Combo Voucher?
+            <i data-lucide="chevron-down" size="20"></i>
+          </button>
+          <div class="faq-answer">
+            Simply fill out the claim form below with your name and mobile phone number. An instant digital barcode voucher will be displayed on screen and sent to your WhatsApp/SMS. Present this barcode to the cashier when paying at any Pick n Cheaper store.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Which Pick n Cheaper store locations accept this voucher?
+            <i data-lucide="chevron-down" size="20"></i>
+          </button>
+          <div class="faq-answer">
+            Your coupon barcode is redeemable across all Pick n Cheaper Cape Town branches including Athlone Superstore, Bellville Center, Mitchells Plain Promenade, Wynberg Main Road, and Milnerton Retail Park.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How long is the social special voucher valid?
+            <i data-lucide="chevron-down" size="20"></i>
+          </button>
+          <div class="faq-answer">
+            Due to intense demand from our TikTok & Instagram social campaign, generated vouchers are locked in for 48 hours from the time of generation to guarantee your store stock allocation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conversion Form Section -->
+  <section class="conversion-section" id="claim-form">
+    <div class="container">
+      <div class="form-card">
+        <h2>Claim My R99.99 Combo Voucher</h2>
+        <p>Enter your details below to instantly generate your digital barcode voucher.</p>
+
+        <form onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="e.g. Sibusiso Ndlovu" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Mobile / WhatsApp Number</label>
+            <input type="tel" id="phone" placeholder="082 123 4567" required>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Preferred Store Location</label>
+            <select id="location" required>
+              <option value="" disabled selected>Select your nearest branch</option>
+              <option value="Athlone Superstore">Athlone Superstore</option>
+              <option value="Bellville Commercial Center">Bellville Center</option>
+              <option value="Mitchells Plain Promenade">Mitchells Plain</option>
+              <option value="Wynberg Main Road">Wynberg Main Rd</option>
+              <option value="Milnerton Retail Park">Milnerton Retail Park</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width: 100%; max-width: 100%; margin-top: 10px;">
+            Claim My R99.99 Combo Voucher <i data-lucide="zap" size="18"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Pick n Cheaper Supermarkets Cape Town. All Rights Reserved. | <a href="#" style="color: #94A3B8;">Privacy Policy</a> | <a href="#" style="color: #94A3B8;">Terms & Conditions</a></p>
+    </div>
+  </footer>
+
+  <!-- Modal Barcode Popup -->
+  <div class="modal" id="successModal">
+    <div class="modal-content">
+      <div style="background: #E6F4EA; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+        <i data-lucide="check" size="32" color="#00875A"></i>
+      </div>
+      <h3 style="font-size: 24px; margin-bottom: 8px; font-weight: 800;">Combo Voucher Claimed!</h3>
+      <p style="color: var(--text-muted); font-size: 14px;">
+        Present this barcode at checkout to get your <strong>1kg Chicken + 2kg Potato Combo for R99.99</strong>.
+      </p>
+
+      <div class="barcode-holder">
+        ||| | |||| | ||| |||| |
+        <div style="font-size: 12px; font-family: sans-serif; letter-spacing: 0; color: var(--text-muted); margin-top: 6px;">PNC-COMBO-9999-CPT</div>
+      </div>
+
+      <p style="font-size: 12px; color: var(--accent); font-weight: 700; margin-bottom: 20px;">
+        ⏱️ Voucher reserved for 48 hours at your selected branch.
+      </p>
+
+      <button class="btn-primary" onclick="closeModal()" style="width: 100%; max-width: 100%;">Done</button>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // 1. Social Campaign Countdown Timer (23h 45m 12s)
+    function startTimer(durationSeconds) {
+      let timer = durationSeconds;
+      const display = document.getElementById('countdown');
+
+      setInterval(() => {
+        const hours = Math.floor(timer / 3600);
+        const minutes = Math.floor((timer % 3600) / 60);
+        const seconds = Math.floor(timer % 60);
+
+        display.textContent = 
+          String(hours).padStart(2, '0') + ":" + 
+          String(minutes).padStart(2, '0') + ":" + 
+          String(seconds).padStart(2, '0');
+
+        if (--timer < 0) {
+          timer = durationSeconds;
         }
+      }, 1000);
+    }
+    startTimer(85512); // 23h 45m 12s
 
-        // Toggle Mobile Menu
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
+    // 2. Interactive Portion & Meal Cost Estimator
+    function calculateSavings() {
+      const packs = parseInt(document.getElementById('packs-slider').value);
+      const weightTotal = packs * 3; // 1kg chicken + 2kg potato = 3kg
+      
+      document.getElementById('packs-display').textContent = packs === 1 ? `1 Combo (3kg Total)` : `${packs} Combos (${weightTotal}kg Total)`;
+      
+      // Portion math: 6 meal servings per combo @ R99.99 = R16.66 / meal
+      const costPerMeal = (99.99 / 6).toFixed(2);
+      document.getElementById('cost-per-meal').textContent = `R${costPerMeal}`;
+      
+      // Save R90 per combo vs regular price
+      const totalSavings = (packs * 90).toFixed(2);
+      document.getElementById('total-savings').textContent = `R${totalSavings}`;
+    }
 
-        // Savings Calculator Logic
-        function updateCalculator() {
-            const slider = document.getElementById('spendSlider');
-            const spend = parseInt(slider.value);
-            document.getElementById('spendDisplay').innerText = 'R ' + spend.toLocaleString();
-            
-            // Calculate 18% estimated savings
-            const monthly = Math.round(spend * 0.18);
-            const annual = monthly * 12;
+    // 3. FAQ Accordion Handler
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.parentElement;
+        item.classList.toggle('active');
+      });
+    });
 
-            document.getElementById('monthlySavings').innerText = 'R ' + monthly.toLocaleString();
-            document.getElementById('annualSavings').innerText = 'R ' + annual.toLocaleString();
-        }
+    // 4. Form Submission and Barcode Modal
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      document.getElementById('successModal').style.display = 'flex';
+    }
 
-        // Category Filter Logic
-        function filterProducts(category) {
-            const cards = document.querySelectorAll('.product-card');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            buttons.forEach(btn => {
-                btn.classList.remove('bg-emerald-700', 'text-white');
-                btn.classList.add('bg-white', 'text-gray-700');
-            });
-            event.currentTarget.classList.remove('bg-white', 'text-gray-700');
-            event.currentTarget.classList.add('bg-emerald-700', 'text-white');
-
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Price Alert Modal Controls
-        function openPriceAlert(productName, defaultPrice) {
-            document.getElementById('modalProductName').innerText = productName;
-            document.getElementById('modalTargetPrice').value = defaultPrice;
-            document.getElementById('modalFormContainer').classList.remove('hidden');
-            document.getElementById('modalSuccessContainer').classList.add('hidden');
-            document.getElementById('priceAlertModal').classList.remove('hidden');
-        }
-
-        function closePriceAlert() {
-            document.getElementById('priceAlertModal').classList.add('hidden');
-        }
-
-        function handlePriceAlertSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('modalEmail').value;
-            const product = document.getElementById('modalProductName').innerText;
-            const price = document.getElementById('modalTargetPrice').value;
-
-            document.getElementById('confirmedEmail').innerText = email;
-            document.getElementById('confirmedProduct').innerText = product;
-            document.getElementById('confirmedPrice').innerText = price;
-
-            document.getElementById('modalFormContainer').classList.add('hidden');
-            document.getElementById('modalSuccessContainer').classList.remove('hidden');
-        }
-
-        // Newsletter Handler
-        function handleNewsletterSubmit(e, type) {
-            e.preventDefault();
-            if (type === 'digest') {
-                document.getElementById('digestSuccess').classList.remove('hidden');
-            } else if (type === 'vip') {
-                document.getElementById('vipSuccess').classList.remove('hidden');
-            }
-        }
-
-        // Contact Form Handler
-        function handleContactSubmit(e) {
-            e.preventDefault();
-            e.target.style.display = 'none';
-            document.getElementById('contactSuccess').classList.remove('hidden');
-        }
-    </script>
+    function closeModal() {
+      document.getElementById('successModal').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
