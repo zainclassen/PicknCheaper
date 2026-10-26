@@ -1,0 +1,70 @@
+import React, { useState } from 'react';
+ 
+export default function NewsletterCard({ 
+  title = "Never Miss a Supermarket Deal!", 
+  subtitle = "Get weekly price-drop alerts and exclusive grocery coupons delivered straight to your inbox.",
+  variant = "default" 
+}) {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+ 
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+    setStatus('loading');
+    try {
+      // Simulate API call or connect to email provider service
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setStatus('success');
+      setEmail('');
+    } catch (err) {
+      setStatus('error');
+    }
+  };
+ 
+  const bgStyles = variant === 'accent' 
+    ? 'bg-amber-50 border-amber-200 text-amber-900' 
+    : 'bg-emerald-800 text-white';
+ 
+  return (
+<div className={`p-6 rounded-xl shadow-md border ${bgStyles} transition-all duration-300`}>
+      {status === 'success' ? (
+<div className="text-center space-y-2 py-4">
+<span className="text-3xl">🎉</span>
+<h4 className="text-xl font-bold">You're on the list!</h4>
+<p className="text-sm opacity-90">
+            Check your inbox for your welcome discount and top weekly grocery deals.
+</p>
+</div>
+      ) : (
+<form onSubmit={handleSubscribe} className="space-y-4">
+<div>
+<h3 className="text-xl font-bold">{title}</h3>
+<p className="text-sm opacity-90 mt-1">{subtitle}</p>
+</div>
+ 
+          <div className="flex flex-col sm:flex-row gap-2">
+<input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address"
+              className="px-4 py-2.5 rounded-lg text-gray-900 bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 flex-1 text-sm"
+            />
+<button
+              type="submit"
+              disabled={status === 'loading'}
+              className="px-5 py-2.5 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold rounded-lg transition-colors text-sm disabled:opacity-50"
+>
+              {status === 'loading' ? 'Joining...' : 'Get Deals'}
+</button>
+</div>
+          {status === 'error' && (
+<p className="text-xs text-red-300">Something went wrong. Please try again.</p>
+          )}
+</form>
+      )}
+</div>
+  );
+}
