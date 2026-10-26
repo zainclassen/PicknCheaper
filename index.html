@@ -1,901 +1,189 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick n Cheaper Supermarket | Fresh Quality, Everyday Low Prices</title>
-    <meta name="description" content="Welcome to Pick n Cheaper Supermarket. Enjoy fresh produce, bakery goods, cheaper value packs, and pay-point services with top savings in South Africa.">
-    <meta name="keywords" content="supermarket, grocery, fresh produce, discount grocery, savings calculator, shopping list, Cape Town, South Africa">
-
+    <title>Pick n Cheaper Supermarket | Fresh, Affordable Groceries</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            red: '#D32F2F',
-                            darkRed: '#B71C1C',
-                            green: '#2E7D32',
-                            lightGreen: '#4CAF50',
-                            yellow: '#FBC02D',
-                            dark: '#1A1A1A',
-                            light: '#F8F9FA'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS for specific overrides & fine animation -->
-    <style>
-        .modal-blur {
-            backdrop-filter: blur(8px);
-        }
-        .page-section {
-            display: none;
-        }
-        .page-section.active {
-            display: block;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans flex flex-col min-h-screen">
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-brand-red text-white text-xs sm:text-sm py-2 px-4 text-center font-medium flex justify-between items-center max-w-full overflow-hidden">
-        <span class="mx-auto flex items-center gap-2">
-            <i class="fa-solid fa-fire text-brand-yellow"></i>
-            <span><strong>Grand Opening Specials!</strong> Save up to 25% on essential basket items this week.</span>
-        </span>
-        <button id="campaign-banner-btn" onclick="switchTab('campaign')" class="hidden md:inline-block bg-brand-yellow text-gray-900 text-xs px-3 py-1 rounded-full font-bold hover:bg-yellow-400 transition-all">
-            Launch Campaign Info
-        </button>
-    </div>
-
-    <!-- Main Navigation Header -->
-    <header class="bg-white shadow-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Brand Logo -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
-                    <div class="bg-brand-red text-white p-2.5 rounded-xl font-black text-2xl tracking-wider flex items-center justify-center shadow-lg">
-                        P<span class="text-brand-yellow">n</span>C
-                    </div>
-                    <div>
-                        <span class="text-xl sm:text-2xl font-black text-brand-red tracking-tight block leading-none">Pick n Cheaper</span>
-                        <span class="text-xs text-brand-green font-semibold tracking-widest uppercase">Supermarket</span>
-                    </div>
-                </div>
-
-                <!-- Desktop Navigation Links -->
-                <nav class="hidden md:flex items-center space-x-8">
-                    <button onclick="switchTab('home')" class="nav-btn text-gray-700 hover:text-brand-red font-semibold transition-colors py-2 active-nav text-brand-red" data-target="home">Home</button>
-                    <button onclick="switchTab('products')" class="nav-btn text-gray-700 hover:text-brand-red font-semibold transition-colors py-2" data-target="products">Products & Services</button>
-                    <button onclick="switchTab('about')" class="nav-btn text-gray-700 hover:text-brand-red font-semibold transition-colors py-2" data-target="about">About Us</button>
-                    <button onclick="switchTab('contact')" class="nav-btn text-gray-700 hover:text-brand-red font-semibold transition-colors py-2" data-target="contact">Contact & Leads</button>
-                    <button onclick="switchTab('campaign')" class="nav-btn bg-brand-green text-white px-4 py-2 rounded-lg font-bold hover:bg-brand-lightGreen transition-all shadow-md flex items-center gap-2" data-target="campaign">
-                        <i class="fa-solid fa-rocket"></i> Campaign Hub
-                    </button>
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-700 hover:text-brand-red p-2 focus:outline-none" aria-label="Toggle Menu">
-                        <i class="fa-solid fa-bars text-2xl" id="menu-icon"></i>
-                    </button>
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="bg-red-600 text-white font-black px-3 py-1.5 rounded-lg text-lg tracking-wider shadow">P n C</span>
+                <div>
+                    <h1 class="text-xl font-extrabold text-red-600 tracking-tight leading-none">Pick n Cheaper</h1>
+                    <span class="text-xs text-gray-500 font-semibold tracking-wide uppercase">Supermarket</span>
                 </div>
             </div>
-        </div>
+            
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-gray-600">
+                <a href="#" class="hover:text-red-600 transition">Home</a>
+                <a href="#" class="hover:text-red-600 transition">Products & Services</a>
+                <a href="#" class="hover:text-red-600 transition">About Us</a>
+                <a href="#" class="hover:text-red-600 transition">Contact & Leads</a>
+            </nav>
 
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-3 shadow-lg">
-            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-gray-700 hover:bg-gray-100">Home</button>
-            <button onclick="switchTab('products'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-gray-700 hover:bg-gray-100">Products & Services</button>
-            <button onclick="switchTab('about'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-gray-700 hover:bg-gray-100">About Us</button>
-            <button onclick="switchTab('contact'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md font-semibold text-gray-700 hover:bg-gray-100">Contact & Leads</button>
-            <button onclick="switchTab('campaign'); toggleMobileMenu();" class="block w-full text-center px-3 py-2.5 rounded-md font-bold bg-brand-green text-white">Digital Launch Campaign</button>
+            <button onclick="openPriceAlert()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow transition">
+                Campaign Hub
+            </button>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-b from-red-600 to-red-700 text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center space-y-4">
+            <h2 class="text-3xl md:text-5xl font-black tracking-tight">Quality Groceries at Unbeatable Prices</h2>
+            <p class="text-red-100 text-base md:text-lg max-w-2xl mx-auto">
+                Directly sourced fresh produce, daily baked goods, and household essentials designed for your family budget.
+            </p>
+            <div class="pt-4 flex flex-wrap justify-center gap-4">
+                <button onclick="openPriceAlert()" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold px-6 py-3 rounded-lg shadow transition">
+                    Shop Special Categories
+                </button>
+                <button onclick="openPriceAlert()" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-6 py-3 rounded-lg transition">
+                    Claim Voucher
+                </button>
+            </div>
+        </div>
+    </section>
 
-        <!-- 1. HOME PAGE -->
-        <section id="page-home" class="page-section active">
-            <!-- Hero Banner -->
-            <div class="relative bg-gradient-to-r from-red-900 via-brand-red to-red-800 text-white overflow-hidden py-16 sm:py-24">
-                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <span class="inline-block bg-brand-yellow text-gray-900 font-extrabold text-xs uppercase px-3 py-1 rounded-full mb-4 shadow">
-                                Everyday Low Price Guarantee
-                            </span>
-                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none mb-6">
-                                Quality Food <br><span class="text-brand-yellow">Without The High Cost.</span>
-                            </h1>
-                            <p class="text-lg text-red-100 mb-8 max-w-xl">
-                                Welcome to Pick n Cheaper. Your neighborhood supermarket delivering high-quality fresh produce, daily baked goods, and household essentials at prices your family budget will love.
-                            </p>
-                            <div class="flex flex-wrap gap-4">
-                                <button onclick="switchTab('products')" class="bg-brand-yellow text-gray-900 font-extrabold px-6 py-3.5 rounded-xl shadow-lg hover:bg-yellow-400 transition-all transform hover:-translate-y-0.5">
-                                    Shop Special Categories
-                                </button>
-                                <button onclick="openPromoModal()" class="bg-white/10 backdrop-blur border border-white/30 text-white font-bold px-6 py-3.5 rounded-xl hover:bg-white/20 transition-all">
-                                    <i class="fa-solid fa-gift text-brand-yellow mr-2"></i> Claim Voucher
-                                </button>
-                            </div>
-                        </div>
-                        <div class="relative hidden md:block">
-                            <div class="bg-white/10 p-6 rounded-3xl border border-white/20 shadow-2xl backdrop-blur-sm text-center">
-                                <i class="fa-solid fa-basket-shopping text-8xl text-brand-yellow mb-4 animate-bounce"></i>
-                                <h3 class="text-2xl font-bold text-white mb-2">Smart Grocery Shopping</h3>
-                                <p class="text-red-100 text-sm">Calculate your monthly grocery savings and organize your cart before you set foot in our aisles!</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Interactive Tool / Mini Savings Calculator Section -->
+    <main class="max-w-4xl mx-auto px-4 -mt-8 mb-16 relative z-10">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
+            <div class="text-center mb-6">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Interactive Tool</span>
+                <h3 class="text-2xl font-bold text-gray-900 mt-2">Mini Savings Calculator</h3>
+                <p class="text-sm text-gray-500 mt-1">See how much you can save every month by switching your primary grocery shopping to Pick n Cheaper.</p>
             </div>
 
-            <!-- Interactive Feature: Mini Savings Calculator -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
-                <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                    <div class="text-center max-w-2xl mx-auto mb-8">
-                        <span class="text-brand-green font-bold text-sm uppercase tracking-wider">Interactive Tool</span>
-                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900">Mini Savings Calculator</h2>
-                        <p class="text-gray-600 text-sm mt-1">See how much you can save every month by switching your primary grocery shopping to Pick n Cheaper.</p>
-                    </div>
-
-                    <div class="grid md:grid-cols-12 gap-8 items-center">
-                        <div class="md:col-span-7 space-y-6">
-                            <div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <label for="monthly-spend" class="font-bold text-gray-700">Current Monthly Grocery Spend (ZAR):</label>
-                                    <span id="spend-display" class="text-xl font-black text-brand-red">R 4,500</span>
-                                </div>
-                                <input type="range" id="monthly-spend" min="1000" max="15000" step="250" value="4500" 
-                                       class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-red"
-                                       oninput="updateSavingsCalculator()">
-                                <div class="flex justify-between text-xs text-gray-500 mt-1">
-                                    <span>R 1,000</span>
-                                    <span>R 7,500</span>
-                                    <span>R 15,000+</span>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="family-size" class="font-bold text-gray-700 block mb-2">Household Size:</label>
-                                <select id="family-size" onchange="updateSavingsCalculator()" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 font-medium text-gray-800 focus:ring-2 focus:ring-brand-red focus:outline-none">
-                                    <option value="1">Single / Individual (1 Person)</option>
-                                    <option value="2">Couple (2 People)</option>
-                                    <option value="4" selected>Family Household (3-4 People)</option>
-                                    <option value="6">Large Family Household (5+ People)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Output Box -->
-                        <div class="md:col-span-5 bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-6 border border-green-200 text-center flex flex-col justify-center">
-                            <h3 class="text-xs font-bold text-brand-green uppercase tracking-wider mb-2">Estimated Grocery Savings</h3>
-                            <div class="my-2">
-                                <span class="text-xs text-gray-500 block">Monthly Savings</span>
-                                <span id="monthly-savings-val" class="text-4xl font-black text-brand-green">R 810</span>
-                            </div>
-                            <hr class="border-green-200 my-3">
-                            <div>
-                                <span class="text-xs text-gray-500 block">Estimated Annual Savings</span>
-                                <span id="annual-savings-val" class="text-2xl font-bold text-gray-800">R 9,720</span>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-4 italic">*Based on average 18% price comparison against traditional national supermarkets.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Value Pillars Section -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
-                        <div class="w-14 h-14 bg-red-100 text-brand-red rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                            <i class="fa-solid fa-apple-whole"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-2">Daily Fresh Harvest</h3>
-                        <p class="text-gray-600 text-sm">Directly sourced from local farmers to guarantee farm-fresh produce delivered every morning.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
-                        <div class="w-14 h-14 bg-yellow-100 text-brand-yellow text-gray-900 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                            <i class="fa-solid fa-tags"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-2">Cheaper Value Brands</h3>
-                        <p class="text-gray-600 text-sm">Our exclusive white-label line provides uncompromised staple quality at unmatched low prices.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
-                        <div class="w-14 h-14 bg-green-100 text-brand-green rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                            <i class="fa-solid fa-money-bill-transfer"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-2">All-In-One Pay Point</h3>
-                        <p class="text-gray-600 text-sm">Pay municipal bills, buy electricity, buy airtime, and withdraw cash right at our till counters.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. PRODUCTS & SERVICES PAGE -->
-        <section id="page-products" class="page-section">
-            <div class="bg-gray-900 text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 text-center">
-                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Our Supermarket Offerings</h1>
-                    <p class="text-gray-400 text-sm max-w-xl mx-auto">Browse our department catalog and filter items to plan your budget efficiently.</p>
-                </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <!-- Grid Layout: Product Filter on Left, Shopping List on Right -->
-                <div class="grid lg:grid-cols-12 gap-8">
-                    
-                    <!-- LEFT: Dynamic Product Filter Section (7 Cols) -->
-                    <div class="lg:col-span-7 space-y-6">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-xl border border-gray-200">
-                            <h2 class="font-bold text-lg text-gray-800">Departments Catalog</h2>
-                            
-                            <!-- Dynamic Product Filter Buttons -->
-                            <div class="flex flex-wrap gap-1.5" id="category-filter-container">
-                                <button onclick="filterCategory('all')" class="cat-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-brand-red text-white" data-cat="all">All</button>
-                                <button onclick="filterCategory('produce')" class="cat-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200" data-cat="produce">Fresh Produce</button>
-                                <button onclick="filterCategory('cheaper')" class="cat-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200" data-cat="cheaper">Cheaper Value</button>
-                                <button onclick="filterCategory('bakery')" class="cat-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200" data-cat="bakery">Bakery</button>
-                                <button onclick="filterCategory('paypoint')" class="cat-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200" data-cat="paypoint">Pay Point</button>
-                            </div>
-                        </div>
-
-                        <!-- Product Grid Render Container -->
-                        <div id="product-grid" class="grid sm:grid-cols-2 gap-4">
-                            <!-- Populated dynamically via JS -->
-                        </div>
-                    </div>
-
-                    <!-- RIGHT: Interactive Digital Shopping List (5 Cols) -->
-                    <div class="lg:col-span-5">
-                        <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sticky top-24">
-                            <div class="flex justify-between items-center mb-4 pb-3 border-b">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-list-check text-brand-red text-xl"></i>
-                                    <h2 class="font-extrabold text-xl text-gray-900">Digital Shopping List</h2>
-                                </div>
-                                <button onclick="clearShoppingList()" class="text-xs text-red-600 hover:underline font-bold">
-                                    <i class="fa-solid fa-trash-can mr-1"></i> Clear All
-                                </button>
-                            </div>
-
-                            <!-- Form to Add Custom Item -->
-                            <form id="add-list-item-form" onsubmit="addCustomListItem(event)" class="mb-4 space-y-2">
-                                <div class="grid grid-cols-12 gap-2">
-                                    <input type="text" id="custom-item-name" placeholder="Item name (e.g. Full Cream Milk)" required class="col-span-7 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-brand-red focus:outline-none">
-                                    <input type="number" id="custom-item-price" placeholder="R Price" min="0" step="0.5" required class="col-span-5 px-3 py-2 text-sm border rounded-lg focus:ring-2 focus:ring-brand-red focus:outline-none">
-                                </div>
-                                <div class="flex gap-2">
-                                    <select id="custom-item-cat" class="w-full px-3 py-1.5 text-xs border rounded-lg bg-gray-50">
-                                        <option value="Groceries">Groceries</option>
-                                        <option value="Fresh Produce">Fresh Produce</option>
-                                        <option value="Bakery">Bakery</option>
-                                        <option value="Services">Services</option>
-                                    </select>
-                                    <button type="submit" class="bg-brand-red text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-brand-darkRed transition-colors whitespace-nowrap">
-                                        + Add Item
-                                    </button>
-                                </div>
-                            </form>
-
-                            <!-- Shopping List Items Display -->
-                            <div id="shopping-list-container" class="space-y-2 max-h-72 overflow-y-auto pr-1 my-4">
-                                <!-- Dynamic Items Added Here -->
-                            </div>
-
-                            <!-- Total Budget Calculation Box -->
-                            <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                                <div class="flex justify-between items-center text-sm mb-1">
-                                    <span class="text-gray-600 font-medium">Total Items:</span>
-                                    <span id="list-item-count" class="font-bold">0</span>
-                                </div>
-                                <div class="flex justify-between items-center text-lg font-black text-gray-900">
-                                    <span>Estimated Total Budget:</span>
-                                    <span id="list-total-price" class="text-brand-green">R 0.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. ABOUT US PAGE -->
-        <section id="page-about" class="page-section">
-            <div class="bg-brand-red text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 text-center">
-                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">About Pick n Cheaper</h1>
-                    <p class="text-red-100 text-sm max-w-xl mx-auto">Dedicated to serving everyday South African families with affordability and quality.</p>
-                </div>
-            </div>
-
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <!-- Calculator Inputs -->
+                <div class="space-y-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Store Story</h2>
-                        <p class="text-gray-600 leading-relaxed text-sm mb-4">
-                            Pick n Cheaper was launched with a singular mission: to make everyday essential groceries accessible and genuinely affordable for every community we serve.
-                        </p>
-                        <p class="text-gray-600 leading-relaxed text-sm">
-                            We bypass unnecessary middlemen and work directly with local farmers and bulk manufacturers, cutting down costs so we can pass savings straight to your shopping basket.
-                        </p>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-sm font-semibold text-gray-700">Current Monthly Grocery Spend (ZAR):</label>
+                            <span id="spendDisplay" class="text-lg font-bold text-red-600">R 4,500</span>
+                        </div>
+                        <input type="range" id="spendSlider" min="1000" max="15000" step="250" value="4500" 
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-600"
+                            oninput="updateCalculator()">
+                        <div class="flex justify-between text-xs text-gray-400 mt-1">
+                            <span>R 1,000</span>
+                            <span>R 7,500</span>
+                            <span>R 15,000+</span>
+                        </div>
                     </div>
-                    <div class="bg-gray-100 p-8 rounded-2xl border border-gray-200 text-center">
-                        <i class="fa-solid fa-store text-6xl text-brand-red mb-4"></i>
-                        <h3 class="font-bold text-xl text-gray-800">Community First Supermarket</h3>
-                        <p class="text-gray-500 text-xs mt-2">Serving local families with honest pricing and friendly smiles daily.</p>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Household Size:</label>
+                        <select class="w-full px-3 py-2 border rounded-lg text-gray-800 bg-white focus:ring-2 focus:ring-red-500 outline-none">
+                            <option>Single Shopper</option>
+                            <option>Couple (2 People)</option>
+                            <option selected>Family Household (3-4 People)</option>
+                            <option>Large Household (5+ People)</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-                    <h2 class="text-xl font-bold text-gray-900 mb-6 text-center">Our Core Commitments</h2>
-                    <div class="grid sm:grid-cols-3 gap-6">
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-red-100 text-brand-red rounded-xl flex items-center justify-center mx-auto mb-3 font-black text-xl">1</div>
-                            <h3 class="font-bold text-gray-800 mb-1">Price Transparency</h3>
-                            <p class="text-xs text-gray-500">No hidden price markups or misleading promotions.</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-yellow-100 text-yellow-800 rounded-xl flex items-center justify-center mx-auto mb-3 font-black text-xl">2</div>
-                            <h3 class="font-bold text-gray-800 mb-1">Freshness First</h3>
-                            <p class="text-xs text-gray-500">Daily quality control inspections across bakery and produce.</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-12 h-12 bg-green-100 text-brand-green rounded-xl flex items-center justify-center mx-auto mb-3 font-black text-xl">3</div>
-                            <h3 class="font-bold text-gray-800 mb-1">Empowering Locals</h3>
-                            <p class="text-xs text-gray-500">Sourcing produce directly from regional South African farmers.</p>
-                        </div>
+                <!-- Calculator Output Card -->
+                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-6 text-center space-y-4">
+                    <span class="text-xs font-bold text-emerald-700 uppercase tracking-wide">Estimated Grocery Savings</span>
+                    <div>
+                        <p class="text-xs text-emerald-600 font-medium">Monthly Savings</p>
+                        <h4 id="monthlySavings" class="text-3xl font-black text-emerald-700">R 810</h4>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. CONTACT & LEAD GEN PAGE -->
-        <section id="page-contact" class="page-section">
-            <div class="bg-gray-900 text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 text-center">
-                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Contact Us & Club SignUp</h1>
-                    <p class="text-gray-400 text-sm max-w-xl mx-auto">Get in touch with customer support or sign up for exclusive digital discount vouchers.</p>
+                    <div class="border-t border-emerald-200/60 pt-3">
+                        <p class="text-xs text-emerald-600 font-medium">Estimated Annual Savings</p>
+                        <h5 id="annualSavings" class="text-xl font-bold text-emerald-800">R 9,720</h5>
+                    </div>
+                    <p class="text-[11px] text-gray-500 italic">*Based on average 18% price comparison against traditional national supermarkets.</p>
                 </div>
             </div>
-
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-10">
-                    <div id="form-alert" class="hidden mb-6 p-4 rounded-xl text-sm font-bold"></div>
-
-                    <form id="contact-lead-form" onsubmit="handleContactSubmit(event)" class="space-y-6">
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div>
-                                <label for="contact-name" class="block text-xs font-bold uppercase text-gray-700 mb-1">Full Name *</label>
-                                <input type="text" id="contact-name" required placeholder="e.g. Thabo Mokoena" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-red focus:outline-none">
-                            </div>
-                            <div>
-                                <label for="contact-email" class="block text-xs font-bold uppercase text-gray-700 mb-1">Email Address *</label>
-                                <input type="email" id="contact-email" required placeholder="name@example.co.za" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-red focus:outline-none">
-                            </div>
-                        </div>
-
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div>
-                                <label for="contact-phone" class="block text-xs font-bold uppercase text-gray-700 mb-1">Phone Number (Optional)</label>
-                                <input type="tel" id="contact-phone" placeholder="082 123 4567" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-red focus:outline-none">
-                            </div>
-                            <div>
-                                <label for="contact-branch" class="block text-xs font-bold uppercase text-gray-700 mb-1">Preferred Store Branch</label>
-                                <select id="contact-branch" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-red focus:outline-none bg-white">
-                                    <option value="Cape Town Central">Cape Town Central</option>
-                                    <option value="Bellville Hub">Bellville Hub</option>
-                                    <option value="Mitchells Plain">Mitchells Plain Store</option>
-                                    <option value="General Inquiry">General Customer Care</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="contact-message" class="block text-xs font-bold uppercase text-gray-700 mb-1">Message or Query *</label>
-                            <textarea id="contact-message" rows="4" required placeholder="How can our customer service team help you today?" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-red focus:outline-none"></textarea>
-                        </div>
-
-                        <!-- POPIA Consent Compliance Checkbox -->
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
-                            <label class="flex items-start gap-3 cursor-pointer">
-                                <input type="checkbox" id="popia-consent" required class="mt-1 h-4 w-4 text-brand-red focus:ring-brand-red border-gray-300 rounded">
-                                <span class="text-xs text-gray-600 leading-relaxed">
-                                    <strong>POPIA Compliance Consent:</strong> I agree to Pick n Cheaper storing and processing my contact information solely for responding to this query and receiving weekly discount promotions. We respect your privacy and will never share your personal information.
-                                </span>
-                            </label>
-                        </div>
-
-                        <button type="submit" class="w-full bg-brand-red text-white font-bold py-4 rounded-xl shadow-lg hover:bg-brand-darkRed transition-colors">
-                            Submit Inquiry & Get VIP Vouchers
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. INTEGRATED DIGITAL LAUNCH CAMPAIGN PANEL -->
-        <section id="page-campaign" class="page-section">
-            <div class="bg-gradient-to-r from-gray-900 to-brand-darkRed text-white py-12">
-                <div class="max-w-7xl mx-auto px-4 text-center">
-                    <span class="bg-brand-yellow text-gray-900 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Marketing Strategy Brief</span>
-                    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Digital Launch Campaign Hub</h1>
-                    <p class="text-gray-300 text-sm max-w-2xl mx-auto">Strategic framework, promotional launch timeline, and target demographic positioning for Pick n Cheaper.</p>
-                </div>
-            </div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
-                <!-- Strategic Core Grid -->
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                        <div class="text-brand-red text-2xl font-black mb-2"><i class="fa-solid fa-bullseye mr-2"></i> Target Audience</div>
-                        <p class="text-xs text-gray-600 leading-relaxed">Price-conscious South African households, family meal planners, local township/suburban shoppers seeking genuine food inflation relief.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                        <div class="text-brand-green text-2xl font-black mb-2"><i class="fa-solid fa-chart-line mr-2"></i> Campaign Goal</div>
-                        <p class="text-xs text-gray-600 leading-relaxed">Drive initial foot traffic for retail store opening, capture 5,000 lead signups via promotional discount popup, and establish value perception.</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
-                        <div class="text-brand-yellow text-gray-900 text-2xl font-black mb-2"><i class="fa-solid fa-share-nodes mr-2"></i> Key Channels</div>
-                        <p class="text-xs text-gray-600 leading-relaxed">Meta Ads (Facebook/Instagram), WhatsApp VIP Broadcast Channel, Local Radio Spotlights, and In-Store Interactive Digital Kiosks.</p>
-                    </div>
-                </div>
-
-                <!-- Launch Campaign Strategy Timeline -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-                    <h2 class="text-2xl font-extrabold text-gray-900 mb-6">4-Week Launch Rollout Plan</h2>
-                    
-                    <div class="space-y-6">
-                        <div class="flex gap-4">
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-brand-red text-white font-bold rounded-full flex items-center justify-center shrink-0">W1</div>
-                                <div class="w-0.5 bg-gray-200 h-full mt-2"></div>
-                            </div>
-                            <div class="pb-6">
-                                <h3 class="font-bold text-gray-800 text-base">Week 1: Teaser & VIP List Building</h3>
-                                <p class="text-xs text-gray-600 mt-1">Deploy interactive web popup offering R50 off vouchers for early registrations. Run localized social media teaser ads.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4">
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-brand-yellow text-gray-900 font-bold rounded-full flex items-center justify-center shrink-0">W2</div>
-                                <div class="w-0.5 bg-gray-200 h-full mt-2"></div>
-                            </div>
-                            <div class="pb-6">
-                                <h3 class="font-bold text-gray-800 text-base">Week 2: Official Grand Opening</h3>
-                                <p class="text-xs text-gray-600 mt-1">Ribbon cutting event, live broadcast on local radio station, instant doorbuster deals on Cheaper Value staple goods.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4">
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-brand-green text-white font-bold rounded-full flex items-center justify-center shrink-0">W3</div>
-                                <div class="w-0.5 bg-gray-200 h-full mt-2"></div>
-                            </div>
-                            <div class="pb-6">
-                                <h3 class="font-bold text-gray-800 text-base">Week 3: Digital Savings Calculator Push</h3>
-                                <p class="text-xs text-gray-600 mt-1">Promote online digital shopping list and savings calculator tool to demonstrate recurring customer savings.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4">
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-gray-800 text-white font-bold rounded-full flex items-center justify-center shrink-0">W4</div>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-gray-800 text-base">Week 4: Loyalty Program Activation</h3>
-                                <p class="text-xs text-gray-600 mt-1">Transition campaign participants into permanent Pick n Cheaper Smart Shopper WhatsApp Club for ongoing weekly deals.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        </div>
     </main>
 
-    <!-- Interactive Feature: Promotional Modal Popup -->
-    <div id="promo-modal" class="fixed inset-0 bg-black/60 modal-blur z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100 transform transition-all">
-            <!-- Close Button -->
-            <button onclick="closePromoModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>&copy; 2026 Pick n Cheaper Supermarket. All rights reserved.</p>
+    </footer>
 
-            <div class="text-center">
-                <span class="inline-block bg-red-100 text-brand-red text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider mb-3">
-                    Exclusive Web Offer
-                </span>
-                <h3 class="text-2xl font-black text-gray-900 mb-2">Claim R50 Off Your First Basket!</h3>
-                <p class="text-gray-600 text-xs mb-4">Subscribe to our weekly specials list or spend R300+ in-store to redeem your launch voucher.</p>
-
-                <!-- Live Dynamic Countdown Timer -->
-                <div class="bg-gray-900 text-white rounded-2xl p-4 mb-6">
-                    <span class="text-xs uppercase text-gray-400 font-bold block mb-2">Offer Expires In:</span>
-                    <div class="flex justify-center gap-4 text-center font-mono">
-                        <div>
-                            <span id="timer-hours" class="text-2xl font-black text-brand-yellow">02</span>
-                            <span class="text-[10px] block text-gray-400">HRS</span>
-                        </div>
-                        <span class="text-xl font-bold text-gray-600">:</span>
-                        <div>
-                            <span id="timer-minutes" class="text-2xl font-black text-brand-yellow">14</span>
-                            <span class="text-[10px] block text-gray-400">MINS</span>
-                        </div>
-                        <span class="text-xl font-bold text-gray-600">:</span>
-                        <div>
-                            <span id="timer-seconds" class="text-2xl font-black text-brand-yellow">45</span>
-                            <span class="text-[10px] block text-gray-400">SECS</span>
-                        </div>
+    <!-- ========================================== -->
+    <!-- PRICE ALERT MODAL (Hidden by default)      -->
+    <!-- ========================================== -->
+    <div id="priceAlertModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-gray-800">
+            <button onclick="closePriceAlert()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-bold text-lg">✕</button>
+            
+            <!-- Form View -->
+            <div id="modalFormContainer">
+                <form onsubmit="handlePriceAlertSubmit(event)" class="space-y-4">
+                    <h3 class="text-xl font-bold text-gray-900">Set Price Alert</h3>
+                    <p class="text-sm text-gray-600">We'll email you as soon as <strong class="text-gray-900">Chicken Breast & Seasoned Potato Combo</strong> drops to your target price.</p>
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Target Price (R)</label>
+                        <input type="number" step="0.01" required value="89.99" class="w-full px-3 py-2 border rounded-md text-gray-900 focus:ring-2 focus:ring-emerald-500 outline-none" />
                     </div>
-                </div>
-
-                <!-- Claim Form inside Modal -->
-                <div id="modal-claim-box">
-                    <input type="email" id="modal-email" placeholder="Enter email to get voucher code" class="w-full px-4 py-3 text-sm border rounded-xl mb-3 focus:ring-2 focus:ring-brand-red focus:outline-none">
-                    <button onclick="claimDiscountVoucher()" class="w-full bg-brand-green text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-brand-lightGreen transition-colors">
-                        Claim Voucher Now
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Your Email</label>
+                        <input type="email" required placeholder="name@example.com" class="w-full px-3 py-2 border rounded-md text-gray-900 focus:ring-2 focus:ring-emerald-500 outline-none" />
+                    </div>
+                    
+                    <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition shadow">
+                        Notify Me When Price Drops
                     </button>
-                </div>
+                </form>
+            </div>
 
-                <!-- Claim Success Box -->
-                <div id="modal-success-box" class="hidden bg-green-50 text-brand-green p-4 rounded-xl border border-green-200">
-                    <i class="fa-solid fa-circle-check text-3xl mb-2"></i>
-                    <h4 class="font-bold text-base">Voucher Claimed!</h4>
-                    <p class="text-xs mt-1">Your code is: <strong class="bg-white px-2 py-1 rounded border text-gray-900">CHEAPER50</strong></p>
-                </div>
+            <!-- Success Confirmation View -->
+            <div id="modalSuccessContainer" class="text-center py-6 space-y-3 hidden">
+                <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
+                <h4 class="text-lg font-bold text-gray-900">Alert Created!</h4>
+                <p class="text-sm text-gray-600">We’ll email your updates when the item drops in price.</p>
+                <button onclick="closePriceAlert()" class="mt-4 px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-md hover:bg-gray-200 transition">
+                    Back to Shopping
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 text-sm py-12 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="space-y-3">
-                <div class="text-white font-black text-xl flex items-center gap-2">
-                    <span class="bg-brand-red text-white p-1.5 rounded-lg text-sm">PnC</span> Pick n Cheaper
-                </div>
-                <p class="text-xs text-gray-400">Your trusted South African neighborhood supermarket providing fresh food at lower costs.</p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3 text-xs uppercase tracking-wider">Quick Navigation</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><button onclick="switchTab('home')" class="hover:text-white">Home Page</button></li>
-                    <li><button onclick="switchTab('products')" class="hover:text-white">Products Catalog</button></li>
-                    <li><button onclick="switchTab('about')" class="hover:text-white">About Supermarket</button></li>
-                    <li><button onclick="switchTab('contact')" class="hover:text-white">Contact & Support</button></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3 text-xs uppercase tracking-wider">Customer Support</h4>
-                <p class="text-xs mb-1"><i class="fa-solid fa-phone text-brand-red mr-2"></i> 0800 123 4567</p>
-                <p class="text-xs mb-1"><i class="fa-solid fa-envelope text-brand-red mr-2"></i> support@pickncheaper.co.za</p>
-                <p class="text-xs"><i class="fa-solid fa-clock text-brand-red mr-2"></i> Mon-Sun: 07:00 - 20:00</p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3 text-xs uppercase tracking-wider">POPIA Compliance</h4>
-                <p class="text-xs leading-relaxed text-gray-400">Pick n Cheaper protects your privacy rights under South Africa's Protection of Personal Information Act.</p>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-gray-800 text-xs text-center text-gray-500">
-            &copy; 2026 Pick n Cheaper Supermarket Ltd. All rights reserved.
-        </div>
-    </footer>
-
+    <!-- JavaScript Interactivity Script -->
     <script>
-        /* ==========================================================================
-           1. NAVIGATION & MULTI-PAGE TAB SWITCHING LOGIC
-           ========================================================================== */
-        function switchTab(targetId) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page-section');
-            pages.forEach(page => page.classList.remove('active'));
+        // Savings Calculator Logic
+        function updateCalculator() {
+            const slider = document.getElementById('spendSlider');
+            const spend = parseInt(slider.value);
+            document.getElementById('spendDisplay').innerText = 'R ' + spend.toLocaleString();
+            
+            // Calculate 18% estimated savings
+            const monthly = Math.round(spend * 0.18);
+            const annual = monthly * 12;
 
-            // Show selected page
-            const selectedPage = document.getElementById('page-' + targetId);
-            if (selectedPage) {
-                selectedPage.classList.add('active');
-            }
-
-            // Update Header Navigation Active State
-            const navButtons = document.querySelectorAll('.nav-btn');
-            navButtons.forEach(btn => {
-                if (btn.getAttribute('data-target') === targetId) {
-                    btn.classList.add('text-brand-red', 'font-bold');
-                } else {
-                    btn.classList.remove('text-brand-red');
-                }
-            });
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('monthlySavings').innerText = 'R ' + monthly.toLocaleString();
+            document.getElementById('annualSavings').innerText = 'R ' + annual.toLocaleString();
         }
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+        // Modal Controls
+        function openPriceAlert() {
+            document.getElementById('priceAlertModal').classList.remove('hidden');
+            document.getElementById('modalFormContainer').classList.remove('hidden');
+            document.getElementById('modalSuccessContainer').classList.add('hidden');
         }
 
-        /* ==========================================================================
-           2. INTERACTIVE FEATURE 1: PROMOTIONAL MODAL POPUP & TIMER
-           ========================================================================== */
-        let countdownSeconds = 2 * 3600 + 14 * 60 + 45; // 2h 14m 45s
-
-        function openPromoModal() {
-            document.getElementById('promo-modal').classList.remove('hidden');
+        function closePriceAlert() {
+            document.getElementById('priceAlertModal').classList.add('hidden');
         }
 
-        function closePromoModal() {
-            document.getElementById('promo-modal').classList.add('hidden');
-        }
-
-        function startModalTimer() {
-            const hoursEl = document.getElementById('timer-hours');
-            const minutesEl = document.getElementById('timer-minutes');
-            const secondsEl = document.getElementById('timer-seconds');
-
-            setInterval(() => {
-                if (countdownSeconds > 0) {
-                    countdownSeconds--;
-                    const h = Math.floor(countdownSeconds / 3600);
-                    const m = Math.floor((countdownSeconds % 3600) / 60);
-                    const s = countdownSeconds % 60;
-
-                    hoursEl.textContent = String(h).padStart(2, '0');
-                    minutesEl.textContent = String(m).padStart(2, '0');
-                    secondsEl.textContent = String(s).padStart(2, '0');
-                }
-            }, 1000);
-        }
-
-        function claimDiscountVoucher() {
-            const emailInput = document.getElementById('modal-email');
-            if (emailInput.value && emailInput.value.includes('@')) {
-                document.getElementById('modal-claim-box').classList.add('hidden');
-                document.getElementById('modal-success-box').classList.remove('hidden');
-            } else {
-                alert('Please enter a valid email address to claim your voucher.');
-            }
-        }
-
-        // Trigger Promo Popup automatically after 3 seconds on initial visit
-        window.addEventListener('load', () => {
-            startModalTimer();
-            setTimeout(() => {
-                openPromoModal();
-            }, 3000);
-        });
-
-        /* ==========================================================================
-           3. INTERACTIVE FEATURE 2: DYNAMIC PRODUCT / CATEGORY FILTER
-           ========================================================================== */
-        const productCatalog = [
-            { id: 1, name: 'Fresh Gala Apples (1.5kg)', category: 'produce', price: 29.99, icon: 'fa-apple-whole', desc: 'Crisp locally harvested farm apples.' },
-            { id: 2, name: 'Cheaper White Rice (2kg)', category: 'cheaper', price: 32.50, icon: 'fa-bowl-rice', desc: 'Long grain staple rice for families.' },
-            { id: 3, name: 'Freshly Baked White Bread', category: 'bakery', price: 11.99, icon: 'fa-bread-slice', desc: 'Baked fresh in store every morning.' },
-            { id: 4, name: 'Eskom Prepaid Electricity', category: 'paypoint', price: 100.00, icon: 'fa-bolt', desc: 'Instant voucher top-up at till point.' },
-            { id: 5, name: 'Fresh Spinach Bunch', category: 'produce', price: 14.99, icon: 'fa-leaf', desc: 'Organically grown rich green spinach.' },
-            { id: 6, name: 'Cheaper Cooking Oil (750ml)', category: 'cheaper', price: 24.99, icon: 'fa-bottle-droplet', desc: 'Triple refined high heat sunflower oil.' },
-            { id: 7, name: 'Butter Croissants (4 Pack)', category: 'bakery', price: 28.00, icon: 'fa-cookie', desc: 'Flaky golden baked pastry delights.' },
-            { id: 8, name: 'Municipal Bill Payment', category: 'paypoint', price: 0.00, icon: 'fa-receipt', desc: 'Zero service fee municipal till payment.' }
-        ];
-
-        function renderProductGrid(filterCat = 'all') {
-            const gridContainer = document.getElementById('product-grid');
-            gridContainer.innerHTML = '';
-
-            const filteredProducts = filterCat === 'all' 
-                ? productCatalog 
-                : productCatalog.filter(p => p.category === filterCat);
-
-            filteredProducts.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between';
-                card.innerHTML = `
-                    <div>
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 bg-red-50 text-brand-red rounded-lg flex items-center justify-center font-bold">
-                                <i class="fa-solid ${product.icon}"></i>
-                            </div>
-                            <span class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded font-bold capitalize">${product.category}</span>
-                        </div>
-                        <h4 class="font-bold text-gray-900 text-sm mb-1">${product.name}</h4>
-                        <p class="text-xs text-gray-500 mb-3">${product.desc}</p>
-                    </div>
-                    <div class="flex justify-between items-center pt-2 border-t border-gray-100">
-                        <span class="text-brand-red font-black text-base">${product.price > 0 ? 'R ' + product.price.toFixed(2) : 'Free Service'}</span>
-                        <button onclick="addPresetToShoppingList('${product.name}', ${product.price}, '${product.category}')" class="bg-gray-900 hover:bg-brand-red text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
-                            + Add to List
-                        </button>
-                    </div>
-                `;
-                gridContainer.appendChild(card);
-            });
-        }
-
-        function filterCategory(category) {
-            // Update Active Filter Button UI
-            const buttons = document.querySelectorAll('.cat-filter-btn');
-            buttons.forEach(btn => {
-                if (btn.getAttribute('data-cat') === category) {
-                    btn.className = 'cat-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-brand-red text-white';
-                } else {
-                    btn.className = 'cat-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200';
-                }
-            });
-
-            // Re-render Product Grid
-            renderProductGrid(category);
-        }
-
-        /* ==========================================================================
-           4. INTERACTIVE FEATURE 3: DIGITAL SHOPPING LIST
-           ========================================================================== */
-        let shoppingList = [
-            { id: 101, name: 'Fresh Gala Apples (1.5kg)', price: 29.99, category: 'Fresh Produce', checked: false },
-            { id: 102, name: 'Cheaper White Rice (2kg)', price: 32.50, category: 'Cheaper Value', checked: false }
-        ];
-
-        function renderShoppingList() {
-            const container = document.getElementById('shopping-list-container');
-            container.innerHTML = '';
-
-            if (shoppingList.length === 0) {
-                container.innerHTML = '<p class="text-xs text-gray-400 text-center py-6">Your shopping list is currently empty.</p>';
-            } else {
-                shoppingList.forEach(item => {
-                    const itemRow = document.createElement('div');
-                    itemRow.className = `flex items-center justify-between p-3 rounded-xl border text-xs ${item.checked ? 'bg-gray-100 text-gray-400 line-through border-gray-200' : 'bg-white border-gray-200'}`;
-                    itemRow.innerHTML = `
-                        <div class="flex items-center gap-3 overflow-hidden">
-                            <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleItemChecked(${item.id})" class="h-4 w-4 text-brand-red focus:ring-brand-red border-gray-300 rounded cursor-pointer">
-                            <div>
-                                <span class="font-bold block truncate">${item.name}</span>
-                                <span class="text-[10px] text-gray-400">${item.category}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3 shrink-0">
-                            <span class="font-bold text-gray-800">R ${item.price.toFixed(2)}</span>
-                            <button onclick="removeShoppingItem(${item.id})" class="text-gray-400 hover:text-red-600">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    `;
-                    container.appendChild(itemRow);
-                });
-            }
-
-            calculateListTotals();
-        }
-
-        function addCustomListItem(e) {
+        function handlePriceAlertSubmit(e) {
             e.preventDefault();
-            const nameInput = document.getElementById('custom-item-name');
-            const priceInput = document.getElementById('custom-item-price');
-            const catInput = document.getElementById('custom-item-cat');
-
-            const newItem = {
-                id: Date.now(),
-                name: nameInput.value.trim(),
-                price: parseFloat(priceInput.value) || 0,
-                category: catInput.value,
-                checked: false
-            };
-
-            shoppingList.push(newItem);
-            nameInput.value = '';
-            priceInput.value = '';
-            renderShoppingList();
+            document.getElementById('modalFormContainer').classList.add('hidden');
+            document.getElementById('modalSuccessContainer').classList.remove('hidden');
         }
-
-        function addPresetToShoppingList(name, price, cat) {
-            const newItem = {
-                id: Date.now(),
-                name: name,
-                price: price,
-                category: cat,
-                checked: false
-            };
-            shoppingList.push(newItem);
-            renderShoppingList();
-        }
-
-        function toggleItemChecked(id) {
-            shoppingList = shoppingList.map(item => item.id === id ? { ...item, checked: !item.checked } : item);
-            renderShoppingList();
-        }
-
-        function removeShoppingItem(id) {
-            shoppingList = shoppingList.filter(item => item.id !== id);
-            renderShoppingList();
-        }
-
-        function clearShoppingList() {
-            shoppingList = [];
-            renderShoppingList();
-        }
-
-        function calculateListTotals() {
-            const countEl = document.getElementById('list-item-count');
-            const totalEl = document.getElementById('list-total-price');
-
-            const total = shoppingList.reduce((sum, item) => sum + item.price, 0);
-
-            countEl.textContent = shoppingList.length;
-            totalEl.textContent = 'R ' + total.toFixed(2);
-        }
-
-        /* ==========================================================================
-           5. INTERACTIVE FEATURE 4: MINI SAVINGS CALCULATOR
-           ========================================================================== */
-        function updateSavingsCalculator() {
-            const spendVal = parseFloat(document.getElementById('monthly-spend').value);
-            const familyMultiplier = parseFloat(document.getElementById('family-size').value);
-
-            document.getElementById('spend-display').textContent = 'R ' + spendVal.toLocaleString();
-
-            // Estimated 18% savings baseline with family size efficiency factor
-            const savingsPercentage = 0.18;
-            const monthlySavings = spendVal * savingsPercentage;
-            const annualSavings = monthlySavings * 12;
-
-            document.getElementById('monthly-savings-val').textContent = 'R ' + Math.round(monthlySavings).toLocaleString();
-            document.getElementById('annual-savings-val').textContent = 'R ' + Math.round(annualSavings).toLocaleString();
-        }
-
-        /* ==========================================================================
-           6. FORM VALIDATION WITH POPIA COMPLIANCE
-           ========================================================================== */
-        function handleContactSubmit(e) {
-            e.preventDefault();
-            const alertBox = document.getElementById('form-alert');
-            const popiaCheck = document.getElementById('popia-consent');
-
-            if (!popiaCheck.checked) {
-                alertBox.className = 'mb-6 p-4 rounded-xl text-sm font-bold bg-red-100 text-red-700 border border-red-200';
-                alertBox.textContent = 'Please accept POPIA consent terms to submit your inquiry.';
-                alertBox.classList.remove('hidden');
-                return;
-            }
-
-            // Successful Submission
-            alertBox.className = 'mb-6 p-4 rounded-xl text-sm font-bold bg-green-100 text-green-700 border border-green-200';
-            alertBox.textContent = 'Thank you! Your inquiry and VIP club entry have been successfully submitted.';
-            alertBox.classList.remove('hidden');
-
-            document.getElementById('contact-lead-form').reset();
-        }
-
-        // Initialize Products and List on load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderProductGrid('all');
-            renderShoppingList();
-            updateSavingsCalculator();
-        });
     </script>
 </body>
 </html>
