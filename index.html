@@ -1,64 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pick n Cheaper Supermarket | Compare & Save Real-Time</title>
+    <title>Pick n Cheaper Supermarket | Fresh Groceries & Smart Savings</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React 18 & Babel Standalone CDNs for runtime execution inside single-file HTML -->
+    <!-- React & Babel CDNs -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-red-100 selection:text-red-700">
 
-    <!-- React Application Mounting Target Point -->
+    <!-- React Application Root -->
     <div id="root"></div>
 
-    <!-- React Application Component Script Block -->
+    <!-- React Application Logic -->
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // =========================================================================
-        // 1. DATA & CONSTANTS
-        // =========================================================================
+        // ==========================================
+        // 1. DATA CATALOG & CONSTANTS
+        // ==========================================
+        const SAMPLE_PRODUCTS = [
+            // Cheaper Staples
+            { id: 1, name: '2L Pure Sunflower Oil', storeA: 64.99, storeB: 79.99, category: 'Cheaper Staples', unit: '2L Bottle', badge: 'Top Seller', desc: 'Triple-refined pure vegetable oil ideal for cooking and frying.' },
+            { id: 2, name: '2kg Long Grain White Rice', storeA: 34.99, storeB: 42.99, category: 'Cheaper Staples', unit: '2kg Bag', badge: 'Best Value', desc: 'Fluffy long grain white rice, perfect everyday family meal staple.' },
+            { id: 3, name: '10kg Super Maize Meal', storeA: 109.99, storeB: 129.99, category: 'Cheaper Staples', unit: '10kg Bag', badge: 'Bulk Deal', desc: 'Enriched super maize meal for hearty nutritious breakfasts and dinners.' },
+            { id: 4, name: '5kg Cake Wheat Flour', storeA: 69.99, storeB: 84.99, category: 'Cheaper Staples', unit: '5kg Bag', badge: 'Essential', desc: 'Premium quality sifted wheat flour for home baking and bread making.' },
+            
+            // Fresh Harvest
+            { id: 5, name: '2L Full Cream Fresh Milk', storeA: 29.99, storeB: 33.99, category: 'Fresh Harvest', unit: '2L Jug', badge: 'Farm Fresh', desc: 'Locally sourced pasteurised full cream milk packed with vitamins.' },
+            { id: 6, name: '1.5kg Farm Fresh Red Apples', storeA: 24.99, storeB: 32.99, category: 'Fresh Harvest', unit: '1.5kg Bag', badge: 'Seasonal', desc: 'Crisp, sweet, hand-picked local crisp apples for healthy snacking.' },
+            { id: 7, name: '3kg Potato Pocket', storeA: 44.99, storeB: 59.99, category: 'Fresh Harvest', unit: '3kg Pocket', badge: 'Direct Farm', desc: 'Class 1 fresh potatoes ideal for roasting, boiling, or home fries.' },
+            { id: 8, name: '1kg Fresh Carrots', storeA: 14.99, storeB: 19.99, category: 'Fresh Harvest', unit: '1kg Bag', badge: 'Vitamin Rich', desc: 'Sweet and crunchy orange carrots harvested daily.' },
 
-        const INITIAL_PRODUCTS = [
-            { id: 1, name: '2L Sunflower Oil', storeA: 64.99, storeB: 79.99, category: 'Pantry', image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80' },
-            { id: 2, name: '2kg White Rice', storeA: 34.99, storeB: 42.99, category: 'Grains', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80' },
-            { id: 3, name: '2L Fresh Milk', storeA: 29.99, storeB: 33.99, category: 'Dairy', image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80' },
-            { id: 4, name: 'White Bread 700g', storeA: 15.99, storeB: 18.99, category: 'Bakery', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=80' },
-            { id: 5, name: '1kg Cheddar Cheese', storeA: 119.99, storeB: 144.99, category: 'Dairy', image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&auto=format&fit=crop&q=80' },
-            { id: 6, name: 'Instant Coffee 200g', storeA: 89.99, storeB: 109.99, category: 'Pantry', image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=80' },
+            // Daily Bakery
+            { id: 9, name: 'White Bread 700g', storeA: 15.99, storeB: 18.99, category: 'Daily Bakery', unit: '700g Loaf', badge: 'Baked Daily', desc: 'Soft sliced white sandwich bread baked fresh every morning.' },
+            { id: 10, name: 'Brown Bread 700g', storeA: 14.99, storeB: 17.99, category: 'Daily Bakery', unit: '700g Loaf', badge: 'High Fibre', desc: 'Whole wheat brown bread loaf rich in natural dietary fibre.' },
+            { id: 11, name: '6-Pack Fresh Butter Croissants', storeA: 34.99, storeB: 44.99, category: 'Daily Bakery', unit: '6 Pack', badge: 'Chef Special', desc: 'Flaky golden butter croissants crafted by our in-house master bakers.' },
+
+            // Pay-Point Services
+            { id: 12, name: 'Airtime & Data Voucher Top-Up', storeA: 0.00, storeB: 0.00, category: 'Pay-Point Services', unit: 'Instant Digital', badge: 'Zero Fee', desc: 'Instant till-point bill payments, electricity, and mobile airtime refills.' },
+            { id: 13, name: 'Grocery Gift Savings Pass', storeA: 250.00, storeB: 250.00, category: 'Pay-Point Services', unit: 'Voucher', badge: 'Bonus 5%', desc: 'Preloaded shopping card with 5% extra bonus value on checkout.' }
         ];
 
-        // =========================================================================
-        // 2. REUSABLE UI COMPONENTS
-        // =========================================================================
+        const TESTIMONIALS = [
+            { id: 1, name: 'Sipho Ndlovu', role: 'Family Shopper', text: 'Pick n Cheaper has reduced my family’s monthly grocery expenditure by over R800. The Smart Basket calculator is spot on!', avatar: '👨‍👩‍👧' },
+            { id: 2, name: 'Anneri van Zyl', role: 'Home Baker', text: 'The bakery quality is outstanding and the bulk staple prices beat every major chain supermarket in town.', avatar: '🥐' },
+            { id: 3, name: 'Devan Naidoo', role: 'Budget Enthusiast', text: 'I set price drop alerts on my daily items. Whenever oil or rice goes on special, I get an email right away.', avatar: '📊' }
+        ];
+
+        const FAQS = [
+            { q: 'How does Pick n Cheaper keep prices so low?', a: 'We work directly with local farmers and bulk manufacturers, eliminating middleman distributor markups and passing total savings straight to your basket.' },
+            { q: 'Can I set price drop notifications for specific items?', a: 'Yes! Simply click the "Price Alert" button on any product card in our catalogue, input your target price, and our system will notify you the instant it goes on special.' },
+            { q: 'Is there a minimum order requirement for store collection?', a: 'No minimums at all. Whether you are buying a single loaf of bread or stocking up your pantry for the month, you receive the same wholesale prices.' },
+            { q: 'How does the Mini Savings Calculator work?', a: 'Our calculator uses real-time market basket benchmarks across competing national supermarket chains to estimate your average 18% monthly savings.' }
+        ];
+
+        // ==========================================
+        // 2. REUSABLE UI COMPONENTS & ICONS
+        // ==========================================
+
+        // SVG Icon Library
+        const Icons = {
+            Cart: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>,
+            Check: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>,
+            Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>,
+            Shield: () => <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>,
+            Truck: () => <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+            Sparkles: () => <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>,
+            ChevronDown: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        };
 
         // Reusable Button Component
         function Button({ children, onClick, type = 'button', variant = 'primary', isLoading = false, disabled = false, className = '' }) {
-            const baseStyles = 'px-5 py-2.5 rounded-lg font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+            const baseStyles = 'px-5 py-2.5 rounded-lg font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]';
             const variants = {
-                primary: 'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-sm hover:shadow-emerald-600/20 hover:shadow-lg',
-                accent: 'bg-amber-400 hover:bg-amber-500 text-slate-900 focus:ring-amber-400 shadow-sm hover:shadow-amber-400/20 hover:shadow-lg',
+                primary: 'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-sm hover:shadow',
+                accent: 'bg-amber-400 hover:bg-amber-500 text-slate-900 focus:ring-amber-400 shadow-sm hover:shadow',
                 secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-800 focus:ring-slate-300',
                 outline: 'border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 focus:ring-emerald-500',
+                brand: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 shadow-sm hover:shadow',
             };
-
             return (
-                <button
-                    type={type}
-                    onClick={onClick}
-                    disabled={disabled || isLoading}
-                    className={`${baseStyles} ${variants[variant] || variants.primary} ${className}`}
-                >
+                <button type={type} onClick={onClick} disabled={disabled || isLoading} className={`${baseStyles} ${variants[variant] || variants.primary} ${className}`}>
                     {isLoading ? (
                         <>
                             <svg className="animate-spin h-4 w-4 text-current" viewBox="0 0 24 24" fill="none">
@@ -67,95 +106,92 @@
                             </svg>
                             <span>Processing...</span>
                         </>
-                    ) : (
-                        children
-                    )}
+                    ) : children}
                 </button>
             );
         }
 
-        // Reusable Product Card Component
+        // Product Card Component
         function ProductCard({ product, onSelect, isSelected, onSetAlert }) {
-            const { name, storeA, storeB, category, image } = product;
+            const { name, storeA, storeB, category, unit, badge, desc } = product;
             const savings = Math.max(0, storeB - storeA);
+            const discountPercent = storeB > 0 ? Math.round((savings / storeB) * 100) : 0;
 
             return (
-                <div
+                <div 
                     onClick={() => onSelect(product.id)}
-                    className={`p-4 rounded-xl border cursor-pointer transition-all duration-200 flex flex-col justify-between ${
-                        isSelected
-                            ? 'border-emerald-600 bg-emerald-50/50 shadow-md ring-2 ring-emerald-500/20 scale-[1.01]'
-                            : 'border-gray-200 hover:border-gray-300 bg-white shadow-sm hover:shadow-md'
+                    className={`p-5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between relative group ${
+                        isSelected 
+                            ? 'border-emerald-600 bg-emerald-50/40 shadow-md ring-2 ring-emerald-500/20' 
+                            : 'border-slate-200 hover:border-slate-300 bg-white shadow-sm hover:shadow'
                     }`}
                 >
                     <div>
-                        <div className="relative h-36 w-full mb-3 rounded-lg overflow-hidden bg-gray-100">
-                            <img 
-                                src={image} 
-                                alt={name} 
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                    e.target.src = 'https://placehold.co/400x300/e2e8f0/475569?text=Grocery+Item';
-                                }}
-                            />
-                            {savings > 0 && (
-                                <span className="absolute top-2 right-2 bg-emerald-600 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow-md">
-                                    Save R{savings.toFixed(2)}
-                                </span>
-                            )}
-                            <span className="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded">
-                                {category}
-                            </span>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{category}</span>
+                            <div className="flex items-center gap-1.5">
+                                {badge && (
+                                    <span className="bg-slate-100 text-slate-700 font-semibold text-[10px] px-2 py-0.5 rounded-md">
+                                        {badge}
+                                    </span>
+                                )}
+                                {savings > 0 && (
+                                    <span className="bg-emerald-100 text-emerald-800 font-bold text-xs px-2.5 py-0.5 rounded-full">
+                                        Save {discountPercent}%
+                                    </span>
+                                )}
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                checked={isSelected}
-                                onChange={() => {}} // Handled by container onClick
-                                className="w-5 h-5 accent-emerald-600 rounded cursor-pointer"
-                            />
-                            <h3 className="font-bold text-slate-800 text-base leading-tight">{name}</h3>
+                        <div className="flex items-start gap-3 mt-1">
+                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition mt-0.5 ${isSelected ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300 bg-white'}`}>
+                                {isSelected && <Icons.Check />}
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-slate-800 text-base leading-snug group-hover:text-red-600 transition-colors">{name}</h3>
+                                <p className="text-xs text-slate-400 font-medium mt-0.5">Unit Size: {unit}</p>
+                                <p className="text-xs text-slate-500 mt-2 line-clamp-2 leading-relaxed">{desc}</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-sm">
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-sm">
                         <div>
-                            <span className="block text-xs text-gray-500">Pick n Cheaper (A): <strong className="text-emerald-700 text-sm font-bold">R{storeA.toFixed(2)}</strong></span>
-                            <span className="block text-xs text-gray-400 line-through">Competitor (B): R{storeB.toFixed(2)}</span>
+                            <div className="text-xs text-slate-400">Pick n Cheaper</div>
+                            <div className="text-lg font-extrabold text-emerald-700 leading-none mt-0.5">
+                                {storeA > 0 ? `R${storeA.toFixed(2)}` : 'FREE SERVICE'}
+                            </div>
+                            {storeB > 0 && (
+                                <div className="text-xs text-slate-400 line-through mt-0.5">
+                                    Comp: R{storeB.toFixed(2)}
+                                </div>
+                            )}
                         </div>
-                        <button
+
+                        <button 
                             type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onSetAlert(product);
-                            }}
-                            className="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 rounded-md transition"
+                            onClick={(e) => { e.stopPropagation(); onSetAlert(product); }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-100 bg-red-50 text-red-600 hover:bg-red-100 font-bold text-xs transition"
                         >
-                            🔔 Alert Me
+                            <Icons.Bell />
+                            <span>Alert</span>
                         </button>
                     </div>
                 </div>
             );
         }
 
-        // Reusable Email Newsletter / Lead Capture Component
-        function NewsletterCard({
-            title = 'Never Miss a Supermarket Deal!',
-            subtitle = 'Get weekly price-drop alerts and exclusive grocery coupons delivered straight to your inbox.',
-            variant = 'default',
-        }) {
+        // Newsletter / Lead Capture Component
+        function NewsletterCard({ title = 'Never Miss a Supermarket Deal!', subtitle = 'Get weekly price-drop alerts and exclusive grocery coupons delivered straight to your inbox.', variant = 'default' }) {
             const [email, setEmail] = useState('');
             const [status, setStatus] = useState('idle');
 
             const handleSubmit = async (e) => {
                 e.preventDefault();
                 if (!email) return;
-
                 setStatus('loading');
                 try {
-                    // Simulate API network call
-                    await new Promise((res) => setTimeout(res, 800));
+                    await new Promise((res) => setTimeout(res, 900));
                     setStatus('success');
                     setEmail('');
                 } catch {
@@ -164,102 +200,53 @@
             };
 
             const isAccent = variant === 'accent';
-
             return (
-                <div
-                    className={`p-6 sm:p-8 rounded-2xl border transition-all ${
-                        isAccent
-                            ? 'bg-amber-50 border-amber-200 text-amber-950 shadow-sm'
-                            : 'bg-emerald-900 border-emerald-800 text-white shadow-xl'
-                    }`}
-                >
+                <div className={`p-6 sm:p-8 rounded-2xl border transition-all shadow-lg ${isAccent ? 'bg-amber-500 border-amber-400 text-slate-950' : 'bg-gradient-to-br from-red-700 to-red-900 border-red-600 text-white'}`}>
                     {status === 'success' ? (
-                        <div className="text-center py-4 space-y-2">
-                            <div className="text-4xl animate-bounce">🎉</div>
-                            <h4 className="text-xl font-bold">You're on the list!</h4>
-                            <p className="text-sm opacity-90 max-w-md mx-auto">
-                                Check your inbox for your welcome savings pass and exclusive grocery discount code.
-                            </p>
+                        <div className="text-center py-6 space-y-3">
+                            <div className="text-4xl">🎉</div>
+                            <h4 className="text-2xl font-extrabold">You're on the VIP Savings Pass!</h4>
+                            <p className="text-sm opacity-90 max-w-md mx-auto">Check your inbox for your welcome savings pass and 10% instant discount barcode.</p>
+                            <button onClick={() => setStatus('idle')} className="text-xs font-bold underline opacity-80 hover:opacity-100">Subscribe another email</button>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
-                                <h3 className="text-xl sm:text-2xl font-extrabold">{title}</h3>
-                                <p className="text-sm opacity-90 mt-1 max-w-xl">{subtitle}</p>
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/10 text-xs font-bold uppercase tracking-wider mb-2">
+                                    <Icons.Sparkles /> VIP Weekly Catalogue
+                                </div>
+                                <h3 className="text-2xl font-extrabold">{title}</h3>
+                                <p className="text-sm opacity-90 mt-1">{subtitle}</p>
                             </div>
-
-                            <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                            <div className="flex flex-col sm:flex-row gap-2 pt-2">
                                 <input
                                     type="email"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter your email address"
-                                    className="px-4 py-3 rounded-lg text-slate-900 bg-white border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 flex-1 text-sm shadow-inner"
+                                    className="px-4 py-3 rounded-xl text-slate-900 bg-white border-0 focus:outline-none focus:ring-2 focus:ring-red-500 flex-1 text-sm font-medium shadow-inner"
                                 />
-                                <Button
-                                    type="submit"
-                                    variant={isAccent ? 'primary' : 'accent'}
-                                    isLoading={status === 'loading'}
-                                    className="sm:w-auto w-full py-3"
-                                >
-                                    Get Deals Now
+                                <Button type="submit" variant={isAccent ? 'brand' : 'accent'} isLoading={status === 'loading'} className="py-3 px-6">
+                                    Get VIP Deals
                                 </Button>
                             </div>
-
-                            {status === 'error' && (
-                                <p className="text-xs text-red-400 font-medium">Something went wrong. Please try again later.</p>
-                            )}
+                            <div className="flex items-center gap-2 text-xs opacity-75 pt-1">
+                                <Icons.Check />
+                                <span>No spam ever. Unsubscribe with 1-click anytime.</span>
+                            </div>
+                            {status === 'error' && <p className="text-xs text-red-200">Something went wrong. Please try again.</p>}
                         </form>
                     )}
                 </div>
             );
         }
 
-        // Reusable Promotional Banner (Listens to Email CTA URL Query Params)
-        function PromoBanner() {
-            const [bannerInfo, setBannerInfo] = useState(null);
-
-            useEffect(() => {
-                const params = new URLSearchParams(window.location.search);
-                const campaign = params.get('utm_campaign');
-                const code = params.get('promo_code');
-
-                if (campaign === 'onboarding') {
-                    setBannerInfo({
-                        message: '👋 Welcome from your onboarding email! Your exclusive welcome voucher is activated.',
-                        code: code || 'WELCOME10',
-                    });
-                } else if (campaign === 'promo_weekend_deals') {
-                    setBannerInfo({
-                        message: '🔥 Flash Deals Activated! Showing this weekend’s absolute lowest price-drop specials.',
-                        code: code || 'WEEKEND20',
-                    });
-                }
-            }, []);
-
-            if (!bannerInfo) return null;
-
-            return (
-                <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white p-4 text-center rounded-xl shadow-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 border border-emerald-400/30 animate-fade-in">
-                    <p className="font-semibold text-sm sm:text-base flex items-center gap-2">
-                        {bannerInfo.message}
-                    </p>
-                    {bannerInfo.code && (
-                        <span className="bg-amber-300 text-slate-900 font-black px-3 py-1 rounded-lg text-xs tracking-wider shadow">
-                            CODE: {bannerInfo.code}
-                        </span>
-                    )}
-                </div>
-            );
-        }
-
-        // Modal for Price Alert Set
+        // Modal Component
         function PriceAlertModal({ product, isOpen, onClose }) {
-            const [targetPrice, setTargetPrice] = useState(product?.storeA || '');
+            const [targetPrice, setTargetPrice] = useState('');
             const [email, setEmail] = useState('');
             const [submitted, setSubmitted] = useState(false);
-            const [loading, setLoading] = useState(false);
 
             useEffect(() => {
                 if (product) {
@@ -272,78 +259,74 @@
 
             const handleSubmit = (e) => {
                 e.preventDefault();
-                setLoading(true);
-                setTimeout(() => {
-                    setLoading(false);
-                    setSubmitted(true);
-                }, 600);
+                setSubmitted(true);
             };
 
             return (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
-                    <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-100">
-                        <button 
-                            onClick={onClose} 
-                            className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 font-bold text-lg"
-                        >
-                            ✕
-                        </button>
+                <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+                    <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative text-slate-800 border border-slate-100">
+                        <button onClick={onClose} className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center font-bold text-sm">✕</button>
+                        
                         {!submitted ? (
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                <div className="space-y-1">
-                                    <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Price Watcher</span>
-                                    <h3 className="text-2xl font-extrabold text-slate-900">Set Price Alert</h3>
-                                    <p className="text-sm text-slate-500">
-                                        We'll monitor <strong>{product.name}</strong> and instantly alert you when the price drops below your target.
-                                    </p>
-                                </div>
-
-                                <div className="space-y-3">
-                                    <div>
-                                        <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Target Price (ZAR)</label>
-                                        <div className="relative">
-                                            <span className="absolute left-3 top-2.5 text-slate-400 font-bold">R</span>
-                                            <input
-                                                type="number"
-                                                step="0.01"
-                                                required
-                                                value={targetPrice}
-                                                onChange={(e) => setTargetPrice(e.target.value)}
-                                                className="w-full pl-8 pr-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-emerald-500 outline-none"
-                                            />
-                                        </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+                                        <Icons.Bell />
                                     </div>
-
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Your Notification Email</label>
-                                        <input
-                                            type="email"
-                                            required
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="you@example.com"
-                                            className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none text-sm"
-                                        />
+                                        <h3 className="text-xl font-extrabold text-slate-900">Set Price Drop Alert</h3>
+                                        <p className="text-xs text-slate-500">{product.name}</p>
                                     </div>
                                 </div>
 
-                                <Button type="submit" variant="primary" isLoading={loading} className="w-full py-3">
-                                    Activate Price Watcher
-                                </Button>
+                                <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-100 space-y-1">
+                                    <div className="flex justify-between text-xs">
+                                        <span className="text-slate-500">Current Price:</span>
+                                        <span className="font-bold text-emerald-700">R{product.storeA.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between text-xs">
+                                        <span className="text-slate-500">Competitor Price:</span>
+                                        <span className="text-slate-400 line-through">R{product.storeB.toFixed(2)}</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Target Alert Price (ZAR)</label>
+                                    <input 
+                                        type="number" 
+                                        step="0.01" 
+                                        required 
+                                        value={targetPrice} 
+                                        onChange={(e) => setTargetPrice(e.target.value)} 
+                                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-lg" 
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Notification Email</label>
+                                    <input 
+                                        type="email" 
+                                        required 
+                                        value={email} 
+                                        onChange={(e) => setEmail(e.target.value)} 
+                                        placeholder="your.email@example.com" 
+                                        className="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none text-sm" 
+                                    />
+                                </div>
+
+                                <button type="submit" className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow transition">
+                                    Activate Instant Alert
+                                </button>
                             </form>
                         ) : (
                             <div className="text-center py-6 space-y-4">
-                                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-black">
-                                    ✓
-                                </div>
-                                <div>
-                                    <h4 className="text-xl font-extrabold text-slate-900">Price Alert Set!</h4>
-                                    <p className="text-sm text-slate-600 mt-1">
-                                        We will send an instant alert to <strong>{email}</strong> when {product.name} reaches <strong>R{Number(targetPrice).toFixed(2)}</strong>.
-                                    </p>
-                                </div>
-                                <Button onClick={onClose} variant="secondary" className="w-full">
-                                    Done & Return to Shopping
+                                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl font-extrabold">✓</div>
+                                <h4 className="text-2xl font-extrabold text-slate-900">Price Tracker Active!</h4>
+                                <p className="text-sm text-slate-600 leading-relaxed">
+                                    We’ve created an active price monitoring trigger for <strong>{product.name}</strong>. You’ll receive an email at <strong>{email}</strong> the second the price hits <strong>R{targetPrice}</strong>.
+                                </p>
+                                <Button variant="secondary" onClick={onClose} className="w-full py-3">
+                                    Back to Catalogue
                                 </Button>
                             </div>
                         )}
@@ -352,355 +335,238 @@
             );
         }
 
-        // =========================================================================
-        // 3. MAIN PAGE SECTIONS & NAV
-        // =========================================================================
-
-        function HeaderNav() {
-            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-            return (
-                <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 sm:h-20">
-                        {/* Logo */}
-                        <a href="#home" className="flex items-center gap-2 group">
-                            <span className="bg-emerald-600 text-white p-2 rounded-xl text-xl font-black shadow-md group-hover:bg-emerald-700 transition">🛒</span>
-                            <div className="flex flex-col">
-                                <span className="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight leading-none">Pick n Cheaper</span>
-                                <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Smart Grocery Savings</span>
-                            </div>
-                        </a>
-
-                        {/* Desktop Links */}
-                        <nav className="hidden md:flex items-center gap-8 font-semibold text-sm text-slate-600">
-                            <a href="#home" className="hover:text-emerald-600 transition">Home</a>
-                            <a href="#products" className="hover:text-emerald-600 transition">Products & Services</a>
-                            <a href="#calculator" className="hover:text-emerald-600 transition">Basket Calculator</a>
-                            <a href="#about" className="hover:text-emerald-600 transition">About Us</a>
-                            <a href="#contact" className="hover:text-emerald-600 transition">Contact & Leads</a>
-                            <a href="#campaign" className="hover:text-emerald-600 transition">Campaign Hub</a>
-                        </nav>
-
-                        {/* CTA Header Button */}
-                        <div className="hidden sm:block">
-                            <a href="#calculator" className="px-4 py-2 bg-emerald-100 text-emerald-800 hover:bg-emerald-200 font-bold text-xs rounded-lg transition">
-                                Launch Calculator 🛒
-                            </a>
-                        </div>
-
-                        {/* Mobile Toggle */}
-                        <button 
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-2 text-slate-600 hover:text-slate-900 font-bold"
-                        >
-                            {mobileMenuOpen ? '✕' : '☰'}
-                        </button>
-                    </div>
-
-                    {/* Mobile Menu Dropdown */}
-                    {mobileMenuOpen && (
-                        <div className="md:hidden bg-white border-b border-slate-200 px-4 py-4 space-y-3 font-semibold text-sm">
-                            <a href="#home" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-emerald-600">Home</a>
-                            <a href="#products" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-emerald-600">Products & Services</a>
-                            <a href="#calculator" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-emerald-600">Basket Calculator</a>
-                            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-emerald-600">About Us</a>
-                            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-emerald-600">Contact & Leads</a>
-                            <a href="#campaign" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-slate-700 hover:text-emerald-600">Campaign Hub</a>
-                        </div>
-                    )}
-                </header>
-            );
-        }
-
-        function HeroSection() {
-            return (
-                <section id="home" className="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900 text-white py-16 sm:py-24 px-4 overflow-hidden">
-                    <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                        <div className="space-y-6 text-center lg:text-left">
-                            <span className="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">
-                                Real-Time Price Comparison
-                            </span>
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-                                Never Pay Full Price For Groceries Again.
-                            </h1>
-                            <p className="text-emerald-100 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
-                                Pick n Cheaper tracks daily price changes across major supermarkets so you can build your basket, compare totals side-by-side, and save every single week.
-                            </p>
-                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                                <a href="#calculator" className="w-full sm:w-auto px-6 py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold rounded-xl shadow-lg transition text-center">
-                                    Start Saving Now 🛒
-                                </a>
-                                <a href="#products" className="w-full sm:w-auto px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold rounded-xl transition text-center">
-                                    Browse Weekly Specials
-                                </a>
-                            </div>
-                        </div>
-
-                        <div className="bg-white/10 backdrop-blur-md border border-white/10 p-6 sm:p-8 rounded-2xl shadow-2xl space-y-4">
-                            <h3 className="text-lg font-bold text-amber-300 uppercase tracking-wider text-center">Why Pick n Cheaper?</h3>
-                            <div className="grid grid-cols-2 gap-4 text-center">
-                                <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <div className="text-3xl font-black text-white">25%+</div>
-                                    <div className="text-xs text-emerald-200 mt-1">Average Weekly Basket Savings</div>
-                                </div>
-                                <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <div className="text-3xl font-black text-white">Daily</div>
-                                    <div className="text-xs text-emerald-200 mt-1">Automated Supermarket Price Sync</div>
-                                </div>
-                                <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <div className="text-3xl font-black text-white">100%</div>
-                                    <div className="text-xs text-emerald-200 mt-1">Free Price Alerts & Coupons</div>
-                                </div>
-                                <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <div className="text-3xl font-black text-white">POPIA</div>
-                                    <div className="text-xs text-emerald-200 mt-1">Compliant Data Protection</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        }
-
-        function ServicesSection() {
-            return (
-                <section id="products" className="py-16 bg-slate-100 border-b border-slate-200">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
-                        <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-                            <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Our Offerings</span>
-                            <h2 className="text-3xl font-extrabold text-slate-900">Products & Smart Grocery Services</h2>
-                            <p className="text-slate-600 text-sm">Everything you need to optimize your household budget and shop smarter.</p>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                                <div className="text-3xl">📊</div>
-                                <h3 className="text-xl font-bold text-slate-900">Live Price Index</h3>
-                                <p className="text-slate-600 text-sm">Real-time daily tracking across pantry staples, fresh dairy, meats, and household goods from leading competitors.</p>
-                            </div>
-                            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                                <div className="text-3xl">🛒</div>
-                                <h3 className="text-xl font-bold text-slate-900">Smart Basket Comparison</h3>
-                                <p className="text-slate-600 text-sm">Add items to a single shopping list and see immediately which store gives you the lowest basket total.</p>
-                            </div>
-                            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
-                                <div className="text-3xl">🔔</div>
-                                <h3 className="text-xl font-bold text-slate-900">Automated Price Drop Alerts</h3>
-                                <p className="text-slate-600 text-sm">Set custom target prices for high-value items and receive instant email notifications when items drop on promotion.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        }
-
-        function AboutUsSection() {
-            return (
-                <section id="about" className="py-16 bg-white border-b border-slate-200">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                            <div className="space-y-4">
-                                <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">About Pick n Cheaper</span>
-                                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Empowering Smart Shoppers Everywhere</h2>
-                                <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
-                                    Pick n Cheaper was founded to bring complete price transparency to supermarket shopping. We believe families shouldn't have to spend hours checking paper flyers to know if they are getting the best deal on daily essentials.
-                                </p>
-                                <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
-                                    By leveraging daily automated price monitoring and user-friendly basket calculations, we help households cut their grocery bills by up to 25% every month.
-                                </p>
-                            </div>
-                            <div className="bg-emerald-50 border border-emerald-100 p-8 rounded-2xl space-y-4">
-                                <h4 className="font-bold text-emerald-950 text-lg">Our Core Commitments</h4>
-                                <ul className="space-y-3 text-sm text-emerald-900">
-                                    <li className="flex items-start gap-2">
-                                        <span className="font-bold text-emerald-600">✓</span>
-                                        <strong>100% Independent:</strong> Fair and unbiased store price comparisons.
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="font-bold text-emerald-600">✓</span>
-                                        <strong>POPIA Compliant:</strong> We safeguard your privacy and lead data with strict confidentiality.
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="font-bold text-emerald-600">✓</span>
-                                        <strong>No Hidden Fees:</strong> Free basket calculator tools for every consumer.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        }
-
-        function ContactFormSection() {
-            const [submitted, setSubmitted] = useState(false);
-            const [loading, setLoading] = useState(false);
-
-            const handleContactSubmit = (e) => {
-                e.preventDefault();
-                setLoading(true);
-                setTimeout(() => {
-                    setLoading(false);
-                    setSubmitted(true);
-                }, 700);
-            };
-
-            return (
-                <section id="contact" className="py-16 bg-slate-50 border-b border-slate-200">
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6">
-                        <div className="text-center max-w-xl mx-auto mb-10 space-y-2">
-                            <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Get In Touch</span>
-                            <h2 className="text-3xl font-extrabold text-slate-900">Contact Us & Lead Inquiries</h2>
-                            <p className="text-slate-600 text-sm">Have questions about retail partnerships or pricing alerts? Send us a message.</p>
-                        </div>
-
-                        <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200">
-                            {submitted ? (
-                                <div className="text-center py-8 space-y-3">
-                                    <div className="text-4xl">✉️</div>
-                                    <h3 className="text-2xl font-extrabold text-slate-900">Thank You!</h3>
-                                    <p className="text-slate-600 text-sm">Your message has been received. Our team will respond within 24 hours.</p>
-                                    <Button onClick={() => setSubmitted(false)} variant="secondary" className="mt-4">
-                                        Send Another Message
-                                    </Button>
-                                </div>
-                            ) : (
-                                <form onSubmit={handleContactSubmit} className="space-y-6">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name</label>
-                                            <input type="text" required placeholder="John Doe" className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Email Address</label>
-                                            <input type="email" required placeholder="john@example.com" className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Subject</label>
-                                        <input type="text" required placeholder="Grocery Partner Lead / Price Question" className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Message</label>
-                                        <textarea rows="4" required placeholder="Tell us how we can help..." className="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"></textarea>
-                                    </div>
-
-                                    <div className="flex items-start gap-2">
-                                        <input type="checkbox" required id="popia" className="mt-1 accent-emerald-600 rounded" />
-                                        <label htmlFor="popia" className="text-xs text-slate-500">
-                                            I consent to Pick n Cheaper storing my contact information in accordance with POPIA regulations for lead response purposes.
-                                        </label>
-                                    </div>
-
-                                    <Button type="submit" variant="primary" isLoading={loading} className="w-full py-3">
-                                        Submit Inquiry
-                                    </Button>
-                                </form>
-                            )}
-                        </div>
-                    </div>
-                </section>
-            );
-        }
-
-        function CampaignHubSection() {
-            return (
-                <section id="campaign" className="py-16 bg-white border-b border-slate-200">
-                    <div className="max-w-4xl mx-auto px-4 sm:px-6">
-                        <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
-                            <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Demo Testing Hub</span>
-                            <h2 className="text-3xl font-extrabold text-slate-900">Email Campaign Link Simulator</h2>
-                            <p className="text-slate-600 text-sm">Click the test links below to simulate dynamic URL parameters (UTM campaign tags & promo codes) and observe top hero banner updates.</p>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <a 
-                                href="?utm_campaign=onboarding&promo_code=WELCOME10#home" 
-                                className="p-4 rounded-xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 transition flex items-center justify-between"
-                            >
-                                <div>
-                                    <div className="font-bold text-emerald-950 text-sm">Onboarding Campaign Link</div>
-                                    <div className="text-xs text-emerald-700">utm_campaign=onboarding & promo_code=WELCOME10</div>
-                                </div>
-                                <span className="text-lg">➡️</span>
-                            </a>
-
-                            <a 
-                                href="?utm_campaign=promo_weekend_deals&promo_code=WEEKEND20#home" 
-                                className="p-4 rounded-xl border border-amber-200 bg-amber-50 hover:bg-amber-100 transition flex items-center justify-between"
-                            >
-                                <div>
-                                    <div className="font-bold text-amber-950 text-sm">Flash Weekend Promo Link</div>
-                                    <div className="text-xs text-amber-700">utm_campaign=promo_weekend_deals</div>
-                                </div>
-                                <span className="text-lg">➡️</span>
-                            </a>
-                        </div>
-                    </div>
-                </section>
-            );
-        }
-
-        // =========================================================================
-        // 4. MAIN INTEGRATED APPLICATION CONTAINER
-        // =========================================================================
-
+        // ==========================================
+        // 3. MAIN APPLICATION CONTAINER
+        // ==========================================
         function App() {
-            const [selectedItems, setSelectedItems] = useState([1, 2]);
+            const [selectedItems, setSelectedItems] = useState([1, 2, 5, 9]);
             const [alertProduct, setAlertProduct] = useState(null);
+            const [activeCategory, setActiveCategory] = useState('All');
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [spend, setSpend] = useState(4500);
+            const [openFaq, setOpenFaq] = useState(null);
+
+            // Contact Form State
+            const [contactSubmitted, setContactSubmitted] = useState(false);
+            const [contactLoading, setContactLoading] = useState(false);
 
             const toggleItem = (id) => {
-                setSelectedItems((prev) =>
-                    prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-                );
+                setSelectedItems((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
             };
 
-            // Calculate Store Totals & Savings dynamically
-            const totalStoreA = INITIAL_PRODUCTS
-                .filter((item) => selectedItems.includes(item.id))
-                .reduce((sum, item) => sum + item.storeA, 0);
+            const toggleAllBasket = () => {
+                if (selectedItems.length === SAMPLE_PRODUCTS.length) {
+                    setSelectedItems([]);
+                } else {
+                    setSelectedItems(SAMPLE_PRODUCTS.map(p => p.id));
+                }
+            };
 
-            const totalStoreB = INITIAL_PRODUCTS
-                .filter((item) => selectedItems.includes(item.id))
-                .reduce((sum, item) => sum + item.storeB, 0);
-
+            // Calculation Totals
+            const totalStoreA = SAMPLE_PRODUCTS.filter((item) => selectedItems.includes(item.id)).reduce((sum, item) => sum + item.storeA, 0);
+            const totalStoreB = SAMPLE_PRODUCTS.filter((item) => selectedItems.includes(item.id)).reduce((sum, item) => sum + item.storeB, 0);
             const totalSavings = Math.max(0, totalStoreB - totalStoreA);
 
+            const monthlyCalcSavings = Math.round(spend * 0.18);
+            const annualCalcSavings = monthlyCalcSavings * 12;
+
+            const filteredProducts = activeCategory === 'All' 
+                ? SAMPLE_PRODUCTS 
+                : SAMPLE_PRODUCTS.filter(p => p.category === activeCategory);
+
+            const handleContactSubmit = async (e) => {
+                e.preventDefault();
+                setContactLoading(true);
+                await new Promise((res) => setTimeout(res, 1000));
+                setContactLoading(false);
+                setContactSubmitted(true);
+            };
+
             return (
-                <div className="min-h-screen flex flex-col justify-between">
+                <div className="min-h-screen flex flex-col justify-between selection:bg-red-500 selection:text-white">
                     <div>
-                        {/* Static Navigation Header */}
-                        <HeaderNav />
-
-                        {/* Hero Section */}
-                        <HeroSection />
-
-                        {/* Interactive Main Savings Section */}
-                        <div id="calculator" className="py-12 px-4 max-w-4xl mx-auto space-y-6">
-                            {/* Dynamic Email Link CTA Landing Banner */}
-                            <PromoBanner />
-
-                            {/* Core Extended Feature: Interactive Basket Calculator */}
-                            <main className="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-100 space-y-6">
-                                <div className="border-b border-slate-100 pb-4">
-                                    <div className="flex items-center justify-between">
-                                        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                                            🛒 Smart Basket Savings Calculator
-                                        </h2>
-                                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
-                                            {selectedItems.length} items selected
-                                        </span>
+                        <!-- Header Navigation Bar -->
+                        <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+                                <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                                    <span className="bg-red-600 text-white font-black px-3 py-1.5 rounded-xl text-xl tracking-wider shadow-sm flex items-center gap-1">
+                                        P<span className="text-amber-400">n</span>C
+                                    </span>
+                                    <div>
+                                        <h1 className="text-xl font-black text-slate-900 tracking-tight leading-none">Pick n Cheaper</h1>
+                                        <span className="text-[10px] text-red-600 font-extrabold tracking-widest uppercase">Fresh Supermarket</span>
                                     </div>
-                                    <p className="text-sm text-slate-500 mt-1">
-                                        Select items to calculate your real-time total basket savings between Store A (Pick n Cheaper) and Store B (Competitor).
-                                    </p>
+                                </div>
+                                
+                                <nav className="hidden lg:flex items-center space-x-8 text-sm font-bold text-slate-600">
+                                    <a href="#home" className="hover:text-red-600 transition-colors">Home</a>
+                                    <a href="#calculator" className="hover:text-red-600 transition-colors">Savings Calculator</a>
+                                    <a href="#products" className="hover:text-red-600 transition-colors">Catalogue Specials</a>
+                                    <a href="#about" className="hover:text-red-600 transition-colors">About Us</a>
+                                    <a href="#contact" className="hover:text-red-600 transition-colors">Contact & Leads</a>
+                                </nav>
+
+                                <div className="hidden lg:flex items-center space-x-3">
+                                    <a href="#campaign" className="bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-2">
+                                        <Icons.Sparkles />
+                                        <span>VIP Catalogue Pass</span>
+                                    </a>
                                 </div>
 
-                                {/* Product Items Grid */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {INITIAL_PRODUCTS.map((product) => (
+                                <button 
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+                                    className="lg:hidden text-slate-700 focus:outline-none p-2 rounded-lg hover:bg-slate-100"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {/* Mobile Navigation Drawer */}
+                            {mobileMenuOpen && (
+                                <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 space-y-3 font-bold text-slate-700 animate-fadeIn">
+                                    <a href="#home" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-lg hover:bg-slate-50 hover:text-red-600">Home</a>
+                                    <a href="#calculator" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-lg hover:bg-slate-50 hover:text-red-600">Savings Calculator</a>
+                                    <a href="#products" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-lg hover:bg-slate-50 hover:text-red-600">Catalogue Specials</a>
+                                    <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-lg hover:bg-slate-50 hover:text-red-600">About Us</a>
+                                    <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-2 px-3 rounded-lg hover:bg-slate-50 hover:text-red-600">Contact & Support</a>
+                                    <a 
+                                        href="#campaign"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="w-full bg-red-600 text-white font-bold py-3 rounded-xl text-center block"
+                                    >
+                                        VIP Catalogue Pass
+                                    </a>
+                                </div>
+                            )}
+                        </header>
+
+                        <!-- Hero Banner Section -->
+                        <section id="home" className="bg-gradient-to-br from-red-600 via-red-700 to-red-900 text-white py-16 lg:py-24 px-4 relative overflow-hidden">
+                            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">
+                                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest text-amber-300 border border-white/20">
+                                    <Icons.Sparkles /> Guaranteed 18% Lower Grocery Bills
+                                </div>
+                                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                                    Quality Fresh Groceries.<br className="hidden sm:inline" /> Unbeatable South African Prices.
+                                </h2>
+                                <p className="text-red-100 text-base sm:text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+                                    Directly sourced farm produce, bakery staples, and daily essential items calculated to stretch your household budget further every week.
+                                </p>
+                                <div className="pt-4 flex flex-wrap justify-center gap-4">
+                                    <a href="#calculator" className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold px-7 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
+                                        <Icons.Cart />
+                                        <span>Try Basket Calculator</span>
+                                    </a>
+                                    <a href="#products" className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-7 py-3.5 rounded-xl transition">
+                                        Browse Product Catalogue
+                                    </a>
+                                </div>
+
+                                <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto text-center border-t border-white/10">
+                                    <div>
+                                        <div className="text-2xl font-black text-amber-300">100%</div>
+                                        <div className="text-xs text-red-100">Fresh Produce Guarantee</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-black text-amber-300">R800+</div>
+                                        <div className="text-xs text-red-100">Avg. Monthly Basket Savings</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-black text-amber-300">14 Store</div>
+                                        <div className="text-xs text-red-100">Regional Outlets</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-black text-amber-300">Daily</div>
+                                        <div className="text-xs text-red-100">Fresh Bakery Bakes</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Main Content Container -->
+                        <main className="max-w-5xl mx-auto px-4 sm:px-6 -mt-10 mb-20 relative z-10 space-y-12">
+                            
+                            <!-- Section 1: Interactive Mini Savings Calculator -->
+                            <div id="calculator" className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-10">
+                                <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
+                                    <span className="text-xs font-black uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">Interactive Budget Tool</span>
+                                    <h3 className="text-2xl sm:text-3xl font-black text-slate-900">Mini Monthly Savings Estimator</h3>
+                                    <p className="text-sm text-slate-500">Adjust the slider below to see how much your household saves by switching primary grocery shopping to Pick n Cheaper.</p>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-8 items-center bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-100">
+                                    <div className="space-y-6">
+                                        <div>
+                                            <div className="flex justify-between items-center mb-2">
+                                                <label className="text-xs font-extrabold uppercase tracking-wider text-slate-600">Current Monthly Spend:</label>
+                                                <span className="text-2xl font-black text-red-600">R {spend.toLocaleString()}</span>
+                                            </div>
+                                            <input 
+                                                type="range" 
+                                                min="1000" 
+                                                max="15000" 
+                                                step="250" 
+                                                value={spend} 
+                                                onChange={(e) => setSpend(parseInt(e.target.value))}
+                                                className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-red-600"
+                                            />
+                                            <div className="flex justify-between text-xs text-slate-400 font-semibold mt-2">
+                                                <span>R 1,000</span>
+                                                <span>R 7,500</span>
+                                                <span>R 15,000+</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600">Household Profile:</label>
+                                            <select className="w-full px-4 py-3 border border-slate-300 rounded-xl text-slate-800 bg-white font-semibold focus:ring-2 focus:ring-red-500 outline-none text-sm">
+                                                <option>Single Person Household</option>
+                                                <option>Couple (2 People)</option>
+                                                <option defaultValue>Standard Family (3-4 People)</option>
+                                                <option>Large Extended Family (5+ People)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-emerald-600 to-teal-800 text-white rounded-2xl p-6 sm:p-8 text-center space-y-4 shadow-md">
+                                        <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-200">Your Estimated Savings</span>
+                                        <div>
+                                            <p className="text-xs text-emerald-100 font-medium">Monthly Extra Cash</p>
+                                            <h4 className="text-4xl font-black text-amber-300 mt-1">R {monthlyCalcSavings.toLocaleString()}</h4>
+                                        </div>
+                                        <div className="border-t border-emerald-500/50 pt-4">
+                                            <p className="text-xs text-emerald-100 font-medium">Annualized Total Savings</p>
+                                            <h5 className="text-2xl font-extrabold text-white">R {annualCalcSavings.toLocaleString()}</h5>
+                                        </div>
+                                        <p className="text-[11px] text-emerald-200 opacity-80 italic leading-tight">
+                                            *Based on audit market comparisons against leading competitor retail supermarkets.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section 2: Smart Basket Savings Calculator -->
+                            <div className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-10 space-y-6">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                                    <div>
+                                        <h3 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                                            <span>🛒 Smart Basket Comparison</span>
+                                        </h3>
+                                        <p className="text-sm text-slate-500 mt-0.5">Select staple items to calculate your real-time live total basket savings.</p>
+                                    </div>
+                                    <button 
+                                        onClick={toggleAllBasket}
+                                        className="text-xs font-bold text-red-600 hover:text-red-700 bg-red-50 px-3.5 py-2 rounded-xl border border-red-100 self-start sm:self-auto"
+                                    >
+                                        {selectedItems.length === SAMPLE_PRODUCTS.length ? 'Deselect All' : 'Select All Items'}
+                                    </button>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {SAMPLE_PRODUCTS.slice(0, 6).map((product) => (
                                         <ProductCard
                                             key={product.id}
                                             product={product}
@@ -711,66 +577,219 @@
                                     ))}
                                 </div>
 
-                                {/* Real-time Calculation Summary */}
-                                <div className="bg-slate-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
-                                    <div>
-                                        <p className="text-xs uppercase tracking-widest text-slate-400 font-bold">
-                                            Total Calculated Basket Savings
-                                        </p>
-                                        <p className="text-4xl font-black text-amber-400 mt-1">
-                                            R{totalSavings.toFixed(2)}
-                                        </p>
+                                <div className="bg-slate-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
+                                    <div className="text-center sm:text-left">
+                                        <p className="text-xs uppercase tracking-widest text-slate-400 font-extrabold">Total Live Basket Savings</p>
+                                        <p className="text-4xl font-black text-amber-400 mt-1">R {totalSavings.toFixed(2)}</p>
                                     </div>
-                                    <div className="text-right text-xs text-slate-300 space-y-1 sm:border-l sm:border-slate-800 sm:pl-6 w-full sm:w-auto">
-                                        <p className="flex justify-between sm:justify-end gap-4">
-                                            <span>Pick n Cheaper (Store A):</span>
-                                            <strong className="text-emerald-400 font-bold">R{totalStoreA.toFixed(2)}</strong>
-                                        </p>
-                                        <p className="flex justify-between sm:justify-end gap-4">
-                                            <span>Competitor Total (Store B):</span>
-                                            <strong className="text-slate-400 line-through">R{totalStoreB.toFixed(2)}</strong>
-                                        </p>
+                                    <div className="text-center sm:text-right text-xs text-slate-300 space-y-1.5 border-t sm:border-t-0 sm:border-l border-slate-800 pt-4 sm:pt-0 sm:pl-6">
+                                        <p>Pick n Cheaper Basket Total: <strong className="text-emerald-400 text-sm">R {totalStoreA.toFixed(2)}</strong></p>
+                                        <p>Regular Supermarket Total: <strong className="text-slate-400 line-through text-sm">R {totalStoreB.toFixed(2)}</strong></p>
                                     </div>
                                 </div>
 
-                                {/* Integrated Email Lead Capture */}
                                 <NewsletterCard
-                                    title="Save This Basket & Get Price Drop Alerts"
-                                    subtitle="We will monitor these items daily and email you when prices drop even lower."
+                                    title="Save this Basket & Lock-In Prices"
+                                    subtitle="Subscribe your email to lock in this basket price for store pickup."
                                     variant="accent"
                                 />
-                            </main>
-                        </div>
+                            </div>
 
-                        {/* Products & Services Section */}
-                        <ServicesSection />
+                            <!-- Section 3: Product Catalogue Specials -->
+                            <section id="products" className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-10 space-y-8">
+                                <div className="text-center max-w-xl mx-auto space-y-2">
+                                    <h3 className="text-2xl sm:text-3xl font-black text-slate-900">Weekly Catalogue Specials</h3>
+                                    <p className="text-sm text-slate-500">Filter through our fresh departments and lock in guaranteed low prices.</p>
+                                </div>
 
-                        {/* About Us Section */}
-                        <AboutUsSection />
+                                <div className="flex flex-wrap justify-center gap-2 border-b border-slate-100 pb-5">
+                                    {['All', 'Cheaper Staples', 'Fresh Harvest', 'Daily Bakery', 'Pay-Point Services'].map(cat => (
+                                        <button
+                                            key={cat}
+                                            onClick={() => setActiveCategory(cat)}
+                                            className={`px-4 py-2.5 rounded-xl font-bold text-xs transition-all ${
+                                                activeCategory === cat 
+                                                    ? 'bg-red-600 text-white shadow' 
+                                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                            }`}
+                                        >
+                                            {cat}
+                                        </button>
+                                    ))}
+                                </div>
 
-                        {/* Contact Form & POPIA Compliance */}
-                        <ContactFormSection />
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {filteredProducts.map(product => (
+                                        <ProductCard
+                                            key={product.id}
+                                            product={product}
+                                            isSelected={selectedItems.includes(product.id)}
+                                            onSelect={toggleItem}
+                                            onSetAlert={(prod) => setAlertProduct(prod)}
+                                        />
+                                    ))}
+                                </div>
+                            </section>
 
-                        {/* Campaign URL Link Tester */}
-                        <CampaignHubSection />
+                            <!-- Section 4: About Us & Guarantees -->
+                            <section id="about" className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-10 space-y-8">
+                                <div className="max-w-2xl space-y-3">
+                                    <span className="text-xs font-black uppercase tracking-widest text-red-600 bg-red-50 px-3 py-1 rounded-full">Our Brand Promise</span>
+                                    <h3 className="text-2xl sm:text-3xl font-black text-slate-900">About Pick n Cheaper Supermarket</h3>
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        Founded with a vision to champion affordable living in South Africa, Pick n Cheaper combines direct farm sourcing, high-efficiency store layouts, and bulk purchasing power to deliver everyday low prices across every aisle.
+                                    </p>
+                                </div>
 
-                        {/* Global Footer Newsletter Lead Capture */}
-                        <div className="max-w-4xl mx-auto px-4 py-8">
-                            <NewsletterCard />
-                        </div>
+                                <div className="grid md:grid-cols-3 gap-6">
+                                    <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
+                                        <Icons.Shield />
+                                        <h4 className="font-extrabold text-base text-slate-900">Direct Farm Sourcing</h4>
+                                        <p className="text-xs text-slate-500 leading-relaxed">We bypass traditional fresh produce distribution hubs, buying directly from local South African farmers.</p>
+                                    </div>
+                                    <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
+                                        <Icons.Truck />
+                                        <h4 className="font-extrabold text-base text-slate-900">Daily Stock Replenishment</h4>
+                                        <p className="text-xs text-slate-500 leading-relaxed">Our store shelves are replenished every morning at 05:00 AM ensuring peak freshness.</p>
+                                    </div>
+                                    <div className="p-6 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
+                                        <Icons.Sparkles />
+                                        <h4 className="font-extrabold text-base text-slate-900">Lowest Price Guarantee</h4>
+                                        <p className="text-xs text-slate-500 leading-relaxed">Find a lower advertised price on an identical item at a local competitor, and we will match it instantly.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Testimonials -->
+                                <div className="pt-6 border-t border-slate-100 space-y-6">
+                                    <h4 className="text-xl font-black text-slate-900 text-center">Loved by Local Shoppers</h4>
+                                    <div className="grid md:grid-cols-3 gap-4">
+                                        {TESTIMONIALS.map(t => (
+                                            <div key={t.id} className="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
+                                                <div className="text-2xl">{t.avatar}</div>
+                                                <p className="text-xs text-slate-600 italic leading-relaxed">"{t.text}"</p>
+                                                <div>
+                                                    <div className="font-bold text-slate-900 text-xs">{t.name}</div>
+                                                    <div className="text-[10px] text-slate-400 font-semibold">{t.role}</div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Section 5: Contact & Support Section -->
+                            <section id="contact" className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-10 space-y-8">
+                                <div className="max-w-xl space-y-2">
+                                    <h3 className="text-2xl sm:text-3xl font-black text-slate-900">Contact & Customer Support</h3>
+                                    <p className="text-sm text-slate-500">Have feedback, store queries, or supplier proposals? Get in touch with our team.</p>
+                                </div>
+
+                                {contactSubmitted ? (
+                                    <div className="p-8 rounded-2xl bg-emerald-50 border border-emerald-100 text-center space-y-3">
+                                        <div className="text-4xl">✉️</div>
+                                        <h4 className="text-2xl font-extrabold text-emerald-900">Message Received!</h4>
+                                        <p className="text-sm text-emerald-700">Thank you for reaching out. A store support representative will respond within 24 hours.</p>
+                                        <button onClick={() => setContactSubmitted(false)} className="text-xs font-bold text-emerald-800 underline">Send another message</button>
+                                    </div>
+                                ) : (
+                                    <form onSubmit={handleContactSubmit} className="space-y-4 max-w-2xl">
+                                        <div className="grid sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Full Name</label>
+                                                <input type="text" required placeholder="John Doe" className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-red-500 outline-none" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Email Address</label>
+                                                <input type="email" required placeholder="name@example.com" className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-red-500 outline-none" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Subject</label>
+                                            <input type="text" required placeholder="Store Inquiry / Product Request" className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-red-500 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-slate-600 uppercase mb-1">Your Message</label>
+                                            <textarea required rows="4" placeholder="How can our customer service team assist you today?" className="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-red-500 outline-none"></textarea>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <input type="checkbox" required id="popia" className="w-4 h-4 accent-red-600 rounded" />
+                                            <label htmlFor="popia" className="text-xs text-slate-500">I consent to processing my details according to POPIA compliance guidelines.</label>
+                                        </div>
+                                        <Button type="submit" variant="brand" isLoading={contactLoading} className="py-3.5 px-8">
+                                            Send Customer Support Message
+                                        </Button>
+                                    </form>
+                                )}
+                            </section>
+
+                            <!-- Section 6: Frequently Asked Questions -->
+                            <section className="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-10 space-y-6">
+                                <h3 className="text-2xl font-black text-slate-900 border-b border-slate-100 pb-4">Frequently Asked Questions</h3>
+                                <div className="space-y-3">
+                                    {FAQS.map((faq, index) => (
+                                        <div key={index} className="border border-slate-100 rounded-2xl overflow-hidden">
+                                            <button 
+                                                onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                                                className="w-full p-4 text-left font-bold text-slate-800 text-sm flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors"
+                                            >
+                                                <span>{faq.q}</span>
+                                                <Icons.ChevronDown />
+                                            </button>
+                                            {openFaq === index && (
+                                                <div className="p-4 text-xs text-slate-600 bg-white leading-relaxed border-t border-slate-100">
+                                                    {faq.a}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <!-- Section 7: Campaign Lead Capture Hub -->
+                            <section id="campaign">
+                                <NewsletterCard />
+                            </section>
+                        </main>
                     </div>
 
-                    {/* Footer */}
-                    <footer className="bg-slate-950 text-slate-400 text-xs py-8 px-4 text-center border-t border-slate-900">
-                        <div className="max-w-6xl mx-auto space-y-3">
-                            <p>© {new Date().getFullYear()} Pick n Cheaper Supermarket. All rights reserved.</p>
-                            <p className="text-slate-500">
-                                Single-Page Application deployed on GitHub Pages. POPIA compliant price monitoring system.
-                            </p>
+                    <!-- Main Footer -->
+                    <footer className="bg-slate-950 text-slate-400 py-12 border-t border-slate-800 text-sm">
+                        <div className="max-w-5xl mx-auto px-4 sm:px-6 grid md:grid-cols-4 gap-8 pb-8 border-b border-slate-800/80">
+                            <div className="space-y-3 md:col-span-2">
+                                <div className="flex items-center space-x-2">
+                                    <span className="bg-red-600 text-white font-black px-2.5 py-1 rounded-lg text-lg">P n C</span>
+                                    <span className="text-xl font-black text-white">Pick n Cheaper</span>
+                                </div>
+                                <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+                                    South Africa’s premier budget-friendly supermarket chain dedicated to quality groceries, farm-fresh produce, and daily household savings.
+                                </p>
+                            </div>
+                            <div>
+                                <h5 className="text-xs font-bold uppercase tracking-wider text-white mb-3">Quick Links</h5>
+                                <ul className="space-y-2 text-xs">
+                                    <li><a href="#home" className="hover:text-white transition">Home</a></li>
+                                    <li><a href="#calculator" className="hover:text-white transition">Savings Calculator</a></li>
+                                    <li><a href="#products" className="hover:text-white transition">Weekly Catalogue</a></li>
+                                    <li><a href="#about" className="hover:text-white transition">About Our Brand</a></li>
+                                    <li><a href="#contact" className="hover:text-white transition">Contact Support</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 className="text-xs font-bold uppercase tracking-wider text-white mb-3">Legal & Compliance</h5>
+                                <ul className="space-y-2 text-xs">
+                                    <li><a href="#" className="hover:text-white transition">POPIA Privacy Notice</a></li>
+                                    <li><a href="#" className="hover:text-white transition">Terms of Service</a></li>
+                                    <li><a href="#" className="hover:text-white transition">Returns Policy</a></li>
+                                    <li><a href="#" className="hover:text-white transition">Store Locator</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6 text-center text-xs text-slate-500">
+                            <p>&copy; 2026 Pick n Cheaper Supermarket South Africa. All rights reserved.</p>
                         </div>
                     </footer>
 
-                    {/* Price Alert Modal Popup */}
+                    <!-- Price Alert Modal Component Mount -->
                     <PriceAlertModal
                         product={alertProduct}
                         isOpen={Boolean(alertProduct)}
@@ -780,7 +799,7 @@
             );
         }
 
-        // Render React Root
+        // Render React DOM Root
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
